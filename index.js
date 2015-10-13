@@ -28,48 +28,36 @@ n = 0;
 //   console.log(msg)
 // })
 
-io.on('connection', function(socket){
 
-  socket.on('disconnect', function () {
-    socket.emit('user disconnected');
-  });
 
-  socket.on('streamTopic', function(msg){
-    newAverage = 0;
-    oldAverage = 0;
-    n = 0;
-    console.log(msg);
-    twitterClient.stream('statuses/filter', {track: msg.topic}, function(stream) {
-      stream.on('data', function(tweet) {
-        var data = {text: tweet.text};
-        hodClient.call('analyzesentiment', data, function(err, resp){
-          if (!err) {
-            if (resp.body.aggregate !== undefined) {
-              n += 1; //increase n by one
-              var sentiment = resp.body.aggregate.sentiment;
-              var score = resp.body.aggregate.score;
-              newAverage = calculateRunningAverage(score, n);
-              rgbInstantaneous = mapColor(score);
-              rgbAverage = mapColor(newAverage);
-              console.log("------------------------------");
-              console.log(tweet.text + " | " + sentiment + " | " + score);
-              var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
-              io.emit('tweetData', tweetData);
-            }
-          }
-        });
-      });
-
-      stream.on('disconnect', function (disconnectMessage) {
-        console.log(disconnectMessage);
-      });
-
-      stream.on('error', function(error) {
-        throw error;
-      });
+twitterClient.stream('statuses/filter', {track: "Bernie Sanders"}, function(stream) {
+  stream.on('data', function(tweet) {
+    var data = {text: tweet.text};
+    hodClient.call('analyzesentiment', data, function(err, resp){
+      if (!err) {
+        if (resp.body.aggregate !== undefined) {
+          n += 1; //increase n by one
+          var sentiment = resp.body.aggregate.sentiment;
+          var score = resp.body.aggregate.score;
+          newAverage = calculateRunningAverage(score, n);
+          rgbInstantaneous = mapColor(score);
+          rgbAverage = mapColor(newAverage);
+          console.log("------------------------------");
+          console.log(tweet.text + " | " + sentiment + " | " + score);
+          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
+          io.emit('tweetData', tweetData);
+        }
+      }
     });
   });
 
+  stream.on('disconnect', function (disconnectMessage) {
+    console.log(disconnectMessage);
+  });
+
+  stream.on('error', function(error) {
+    throw error;
+  });
 });
 
 app.get("/", function(req, res){
