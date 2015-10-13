@@ -5,14 +5,14 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <style>
 body {
-  background-color: #2F69C6;
+  background-color: #FFFFFF;
   font-size: 12px;
   padding-top: 20px;
 }
 .bottom-border {
   border-radius: 0px;
   border-bottom: 2px solid #000000;
-  width: 99%;
+  /*width: 99%;*/
 }
 #average-score {
   vertical-align: top;
@@ -51,6 +51,19 @@ h2.title {
 <body>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<div class="row">
+  <div class="col-xs-3 col-xs-offset-1 text-center">
+    <p>
+      Powered by <a href="https://havenondemand.com" target="_blank"><img src="img/hod.png" height="20px" alt="" /></a> <a href="https://dev.havenondemand.com/apis/analyzesentiment#overview" target="_blank">sentiment analysis</a>
+    </p>
+  </div>
+  <div class="col-xs-3 col-xs-offset-5 text-right">
+    <p>
+      <a href="https://github.com/tylernappy/politicians-twitter-sentiment-analysis" target="_blank">source code</a> | send pull requests :)
+    </p>
+  </div>
+</div>
 
 <div class="row" id="candidates">
 
