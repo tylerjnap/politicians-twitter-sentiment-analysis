@@ -20,9 +20,10 @@ var twitterClient = new Twitter({
 port = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname, 'public')));
 
-newAverage = 0;
-oldAverage = 0;
-n = 0;
+averagesBernie = {newAvg: 0, oldAvg: 0}
+nBernie = 0;
+averagesHillary = {newAvg: 0, oldAvg: 0}
+nHillary = 0;
 
 // io.on('streamTopic', function(msg){
 //   console.log(msg)
@@ -39,12 +40,12 @@ twitterClient.stream('statuses/filter', {track: "Bernie Sanders,BernieSanders"},
           n += 1; //increase n by one
           var sentiment = resp.body.aggregate.sentiment;
           var score = resp.body.aggregate.score;
-          newAverage = calculateRunningAverage(score, n);
+          averagesBernie = calculateRunningAverage(score, nBernie, averagesBernie);
           rgbInstantaneous = mapColor(score);
-          rgbAverage = mapColor(newAverage);
+          rgbAverage = mapColor(averagesBernie.newAvg);
           console.log("------------------------------");
           console.log(tweet.text + " | " + sentiment + " | " + score);
-          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
+          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesBernie.newAvg};
           io.emit('tweetDataBernie', tweetData);
         }
       }
@@ -69,12 +70,12 @@ twitterClient.stream('statuses/filter', {track: "Hillary Clinton,HillaryClinton"
           n += 1; //increase n by one
           var sentiment = resp.body.aggregate.sentiment;
           var score = resp.body.aggregate.score;
-          newAverage = calculateRunningAverage(score, n);
+          averagesHillary = calculateRunningAverage(score, nHillary, averagesHillary);
           rgbInstantaneous = mapColor(score);
-          rgbAverage = mapColor(newAverage);
+          rgbAverage = mapColor(averagesHillary.newAvg);
           console.log("------------------------------");
           console.log(tweet.text + " | " + sentiment + " | " + score);
-          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
+          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesHillary.newAvg};
           io.emit('tweetDataHillary', tweetData);
         }
       }
@@ -106,8 +107,8 @@ mapColor = function (score) {
   return {r: r, g: g, b:b};
 }
 
-calculateRunningAverage = function(score, n) {
-  newAverage = oldAverage * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
-  oldAverage = newAverage; //set equal to new average for next go around of calling this function
-  return newAverage;
+calculateRunningAverage = function(score, n, averages) {
+  averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
+  averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
+  return averages
 }
