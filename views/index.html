@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<style>
+body {
+  background-color: #2F69C6;
+  font-size: 12px;
+  padding-top: 20px;
+}
+.bottom-border {
+  border-radius: 0px;
+  border-bottom: 2px solid #000000;
+}
+input {
+    width: 80%;
+}
+#average-score {
+  vertical-align: top;
+}
+#heading{
+  background-color: #2F69C6;
+  font-weight: bold;
+}
+h2.title {
+  color: white;
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <h2 class="title">Track sentiment of topics on Twitter using HP Haven OnDemand</h2>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-xs-5 col-xs-offset-1 well">
+    <div class="row">
+      <div class="col-xs-12">
+      <form>
+        <input type="text" class="form-control" name="stream" id="stream0" size="30" placeholder="What do you want to track the sentiment of on Twitter?">
+      </form>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-xs-12"><button type="button" class="btn" onclick="buttonClick()">Track on Twitter</button></div>
+    </div>
+  </div>
+  <div class="col-xs-5">
+    <div class="row">
+      <div class="col-xs-12 text-right">
+        <h2>Average Sentiment</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 text-right" id="average-side">
+        <div id="average-score">N/A</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 text-center bottom-border" id="instantaneous-side">
+    <h2>Instantaneous Sentiment</h2>
+  </div>
+</div>
+<div class="row bottom-border" id="heading">
+  <div class="col-xs-2">User</div>
+  <div class="col-xs-3">Tweet</div>
+  <div class="col-xs-2"># Positves Topics</div>
+  <div class="col-xs-2"># Negatives Topics</div>
+  <div class="col-xs-2">Overall Sentiment Score</div>
+</div>
+<div class="row">
+  <div class="col-xs-12 messages">
+    <!-- stuff gets added here for messages -->
+  </div>
+</div>
+
+<script>
+  var socket = io();
+  socket.on('tweetData', function(msg){
+    console.log(msg);
+    $("#average-score").html(msg.average); // <div id="average-score"></div>
+    $("#average-side").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
+    $("body").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
+    $(".messages").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-1'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-1'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-3'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-2'><div id='positive'>" + msg.positive.length + "</div></div><div class='col-xs-2'><div id='negative'>" + msg.negative.length + "</div></div><div class='col-xs-2'><div id='aggregate'>" + msg.aggregate.score + "</div></div></div>");
+  });
+
+  function buttonClick() {
+    var topicValue = document.getElementById('stream0').value;
+    socket.emit('streamTopic',{topic: topicValue});
+  }
+
+  $(document).keypress(
+    function(event){
+     if (event.which == '13') {
+        event.preventDefault();
+      }
+  });
+</script>
+</body>
+</html>
