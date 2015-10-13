@@ -246,5 +246,15 @@ socket.on('tweetDataHillary', function(msg){
   $(".messages-hillary").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + Math.floor((msg.aggregate.score*100* 100) / 100) + "%" + "</div></div></div>");
 });
 </script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68842515-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </body>
 </html>
