@@ -70,7 +70,7 @@ h2.title {
         </div>
         <div class="row">
           <div class="col-xs-12 text-left" id="average-side">
-            <div id="average-score">N/A</div>
+            <div id="average-score-bernie">N/A</div>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ h2.title {
     <!-- /Averge stuff -->
     <!-- Instantanous stuff -->
     <div class="row">
-      <div class="col-xs-12 text-center bottom-border" id="instantaneous-side">
+      <div class="col-xs-12 text-left bottom-border" id="instantaneous-side">
         <h2>Instantaneous Sentiment</h2>
       </div>
     </div>
@@ -88,7 +88,7 @@ h2.title {
       <div class="col-xs-3">Overall Sentiment Score</div>
     </div>
     <div class="row">
-      <div class="col-xs-12 messages">
+      <div class="col-xs-12 messages-bernie">
         <!-- stuff gets added here for messages -->
       </div>
     </div>
@@ -97,11 +97,11 @@ h2.title {
 
   <div class="col-xs-6">
     <!-- Average stuff -->
-    <div class="row" id="bernie">
+    <div class="row" id="hillary">
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12 text-center">
-            <img src="img/bernie.jpg" height="150px" alt="" />
+            <img src="img/hillary.jpg" height="150px" alt="" />
           </div>
         </div>
         <div class="row">
@@ -111,7 +111,7 @@ h2.title {
         </div>
         <div class="row">
           <div class="col-xs-12 text-left" id="average-side">
-            <div id="average-score">N/A</div>
+            <div id="average-score-hillary">N/A</div>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@ h2.title {
     <!-- /Averge stuff -->
     <!-- Instantanous stuff -->
     <div class="row">
-      <div class="col-xs-12 text-center bottom-border" id="instantaneous-side">
+      <div class="col-xs-12 text-left bottom-border" id="instantaneous-side">
         <h2>Instantaneous Sentiment</h2>
       </div>
     </div>
@@ -129,38 +129,29 @@ h2.title {
       <div class="col-xs-3">Overall Sentiment Score</div>
     </div>
     <div class="row">
-      <div class="col-xs-12 messages">
+      <div class="col-xs-12 messages-hillary">
         <!-- stuff gets added here for messages -->
       </div>
     </div>
     <!-- /Instantanous stuff -->
   </div>
 
-
-
 </div>
 
 <script>
-  var socket = io();
-  socket.on('tweetData', function(msg){
-    console.log(msg);
-    $("#average-score").html(msg.average); // <div id="average-score"></div>
-    $("#bernie").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
-    $("bernie").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
-    $(".messages").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + msg.aggregate.score + "</div></div></div>");
-  });
-
-  function buttonClick() {
-    var topicValue = document.getElementById('stream0').value;
-    socket.emit('streamTopic',{topic: topicValue});
-  }
-
-  $(document).keypress(
-    function(event){
-     if (event.which == '13') {
-        event.preventDefault();
-      }
-  });
+var socket = io();
+socket.on('tweetDataBernie', function(msg){
+  console.log(msg);
+  $("#average-score-bernie").html(msg.average); // <div id="average-score"></div>
+  $("#bernie").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
+  $(".messages-bernie").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + msg.aggregate.score + "</div></div></div>");
+});
+socket.on('tweetDataHillary', function(msg){
+  console.log(msg);
+  $("#average-score-hillary").html(msg.average); // <div id="average-score"></div>
+  $("#hillary").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
+  $(".messages-hillary").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + msg.aggregate.score + "</div></div></div>");
+});
 </script>
 </body>
 </html>

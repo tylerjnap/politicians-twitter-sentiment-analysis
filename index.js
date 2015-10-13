@@ -30,7 +30,7 @@ n = 0;
 
 
 
-twitterClient.stream('statuses/filter', {track: "Bernie Sanders"}, function(stream) {
+twitterClient.stream('statuses/filter', {track: "Bernie Sanders,BernieSanders"}, function(stream) {
   stream.on('data', function(tweet) {
     var data = {text: tweet.text};
     hodClient.call('analyzesentiment', data, function(err, resp){
@@ -45,7 +45,37 @@ twitterClient.stream('statuses/filter', {track: "Bernie Sanders"}, function(stre
           console.log("------------------------------");
           console.log(tweet.text + " | " + sentiment + " | " + score);
           var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
-          io.emit('tweetData', tweetData);
+          io.emit('tweetDataBernie', tweetData);
+        }
+      }
+    });
+  });
+
+  stream.on('disconnect', function (disconnectMessage) {
+    console.log(disconnectMessage);
+  });
+
+  stream.on('error', function(error) {
+    throw error;
+  });
+});
+
+twitterClient.stream('statuses/filter', {track: "Hillary Clinton,HillaryClinton"}, function(stream) {
+  stream.on('data', function(tweet) {
+    var data = {text: tweet.text};
+    hodClient.call('analyzesentiment', data, function(err, resp){
+      if (!err) {
+        if (resp.body.aggregate !== undefined) {
+          n += 1; //increase n by one
+          var sentiment = resp.body.aggregate.sentiment;
+          var score = resp.body.aggregate.score;
+          newAverage = calculateRunningAverage(score, n);
+          rgbInstantaneous = mapColor(score);
+          rgbAverage = mapColor(newAverage);
+          console.log("------------------------------");
+          console.log(tweet.text + " | " + sentiment + " | " + score);
+          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: newAverage};
+          io.emit('tweetDataHillary', tweetData);
         }
       }
     });
