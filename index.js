@@ -37,6 +37,8 @@ nNeutralHillary = 0;
 //   console.log(msg)
 // })
 
+//
+
 
 
 twitterClient.stream('statuses/filter', {track: "Bernie Sanders,BernieSanders"}, function(stream) {
