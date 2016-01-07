@@ -41,7 +41,7 @@ nNeutralHillary = 0;
 
 
 
-twitterClient.stream('statuses/filter', {track: "Bernie Sanders,BernieSanders"}, function(stream) {
+twitterClient.stream('statuses/filter', {track: "realDonaldTrump,Donald Trump"}, function(stream) {
   stream.on('data', function(tweet) {
     var data = {text: tweet.text};
     hodClient.call('analyzesentiment', data, function(err, resp){
@@ -78,7 +78,7 @@ twitterClient.stream('statuses/filter', {track: "Bernie Sanders,BernieSanders"},
   });
 });
 
-twitterClient.stream('statuses/filter', {track: "Hillary Clinton,HillaryClinton"}, function(stream) {
+twitterClient.stream('statuses/filter', {track: "marcorubio,Marco Rubio"}, function(stream) {
   stream.on('data', function(tweet) {
     var data = {text: tweet.text};
     hodClient.call('analyzesentiment', data, function(err, resp){
