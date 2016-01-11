@@ -41,79 +41,85 @@ nNeutralHillary = 0;
 
 
 
-twitterClient.stream('statuses/filter', {track: "realDonaldTrump,Donald Trump"}, function(stream) {
-  stream.on('data', function(tweet) {
-    var data = {text: tweet.text};
-    hodClient.call('analyzesentiment', data, function(err, resp){
-      if (!err) {
-        if (resp.body.aggregate !== undefined) {
-          nBernie += 1; //increase n by one
-          var sentiment = resp.body.aggregate.sentiment;
-          var score = resp.body.aggregate.score;
-          if (score > 0) {
-            nPositiveBernie += 1;
-          } else if(score < 0) {
-            nNegativeBernie += 1;
-          } else {
-            nNeutralBernie += 1;
-          }
-          averagesBernie = calculateRunningAverage(score, nBernie, averagesBernie);
-          rgbInstantaneous = mapColor(score);
-          rgbAverage = mapColor(averagesBernie.newAvg);
-          console.log("------------------------------");
-          console.log(tweet.text + " | " + sentiment + " | " + score);
-          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesBernie.newAvg, n: nBernie, nNeutral: nNeutralBernie, nNegative: nNegativeBernie, nPositive: nPositiveBernie};
-          io.emit('tweetDataBernie', tweetData);
-        }
-      }
-    });
-  });
+// twitterClient.stream('statuses/filter', {track: "realDonaldTrump,Donald Trump"}, function(stream) {
+//   stream.on('data', function(tweet) {
+//     var data = {text: tweet.text};
+//     hodClient.call('analyzesentiment', data, function(err, resp){
+//       if (!err) {
+//         if (resp.body.aggregate !== undefined) {
+//           nBernie += 1; //increase n by one
+//           var sentiment = resp.body.aggregate.sentiment;
+//           var score = resp.body.aggregate.score;
+//           if (score > 0) {
+//             nPositiveBernie += 1;
+//           } else if(score < 0) {
+//             nNegativeBernie += 1;
+//           } else {
+//             nNeutralBernie += 1;
+//           }
+//           averagesBernie = calculateRunningAverage(score, nBernie, averagesBernie);
+//           rgbInstantaneous = mapColor(score);
+//           rgbAverage = mapColor(averagesBernie.newAvg);
+//           console.log("------------------------------");
+//           console.log(tweet.text + " | " + sentiment + " | " + score);
+//           var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesBernie.newAvg, n: nBernie, nNeutral: nNeutralBernie, nNegative: nNegativeBernie, nPositive: nPositiveBernie};
+//           io.emit('tweetDataBernie', tweetData);
+//         }
+//       }
+//     });
+//   });
+//
+//   stream.on('disconnect', function (disconnectMessage) {
+//     console.log(disconnectMessage);
+//   });
+//
+//   stream.on('error', function(error) {
+//     throw error;
+//   });
+// });
+//
+// twitterClient.stream('statuses/filter', {track: "marcorubio,Marco Rubio"}, function(stream) {
+//   stream.on('data', function(tweet) {
+//     var data = {text: tweet.text};
+//     hodClient.call('analyzesentiment', data, function(err, resp){
+//       if (!err) {
+//         if (resp.body.aggregate !== undefined) {
+//           nHillary += 1; //increase n by one
+//           var sentiment = resp.body.aggregate.sentiment;
+//           var score = resp.body.aggregate.score;
+//           if (score > 0) {
+//             nPositiveHillary += 1;
+//           } else if(score < 0) {
+//             nNegativeHillary += 1;
+//           } else {
+//             nNeutralHillary += 1;
+//           }
+//           averagesHillary = calculateRunningAverage(score, nHillary, averagesHillary);
+//           rgbInstantaneous = mapColor(score);
+//           rgbAverage = mapColor(averagesHillary.newAvg);
+//           console.log("------------------------------");
+//           console.log(tweet.text + " | " + sentiment + " | " + score);
+//           var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesHillary.newAvg, n: nHillary, nNeutral: nNeutralHillary, nNegative: nNegativeHillary, nPositive: nPositiveHillary};
+//           io.emit('tweetDataHillary', tweetData);
+//         }
+//       }
+//     });
+//   });
+//
+//   stream.on('disconnect', function (disconnectMessage) {
+//     console.log(disconnectMessage);
+//   });
+//
+//   stream.on('error', function(error) {
+//     throw error;
+//   });
+// });
 
-  stream.on('disconnect', function (disconnectMessage) {
-    console.log(disconnectMessage);
-  });
+setInterval(function() {
+  io.emit('message', {user: "Tyler", text: "This is a test"});
+  console.log("emitted test");
+}, 3000);
 
-  stream.on('error', function(error) {
-    throw error;
-  });
-});
-
-twitterClient.stream('statuses/filter', {track: "marcorubio,Marco Rubio"}, function(stream) {
-  stream.on('data', function(tweet) {
-    var data = {text: tweet.text};
-    hodClient.call('analyzesentiment', data, function(err, resp){
-      if (!err) {
-        if (resp.body.aggregate !== undefined) {
-          nHillary += 1; //increase n by one
-          var sentiment = resp.body.aggregate.sentiment;
-          var score = resp.body.aggregate.score;
-          if (score > 0) {
-            nPositiveHillary += 1;
-          } else if(score < 0) {
-            nNegativeHillary += 1;
-          } else {
-            nNeutralHillary += 1;
-          }
-          averagesHillary = calculateRunningAverage(score, nHillary, averagesHillary);
-          rgbInstantaneous = mapColor(score);
-          rgbAverage = mapColor(averagesHillary.newAvg);
-          console.log("------------------------------");
-          console.log(tweet.text + " | " + sentiment + " | " + score);
-          var tweetData = {tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: averagesHillary.newAvg, n: nHillary, nNeutral: nNeutralHillary, nNegative: nNegativeHillary, nPositive: nPositiveHillary};
-          io.emit('tweetDataHillary', tweetData);
-        }
-      }
-    });
-  });
-
-  stream.on('disconnect', function (disconnectMessage) {
-    console.log(disconnectMessage);
-  });
-
-  stream.on('error', function(error) {
-    throw error;
-  });
-});
 
 app.get("/", function(req, res){
   res.sendFile(__dirname + '/views/index.html');

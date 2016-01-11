@@ -1,260 +1,103 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<style>
-body {
-  background-color: #FFFFFF;
-  font-size: 12px;
-  padding-top: 20px;
-}
-.bottom-border {
-  border-radius: 0px;
-  border-bottom: 2px solid #000000;
-  /*width: 99%;*/
-}
-#average-score {
-  vertical-align: top;
-}
-#heading{
-  background-color: #2F69C6;
-  font-weight: bold;
-}
-h2.title {
-  color: white;
-  text-decoration: underline;
-}
-#bernie {
-  width: 50%;
-  min-height: 20px;
-  padding: 37px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: -78px solid #e3e3e3;
-  border-radius: 4px;
-}
-#hillary {
-  width: 50%;
-  min-height: 20px;
-  padding: 37px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: -78px solid #e3e3e3;
-  border-radius: 4px;
-}
-#candidates {
-  margin-left: 70px;
-}
-#sentiment {
-  padding-left: 80px;
-}
-#source-code {
-   padding-left: 80px;
-}
-#explanation {
-  padding-left: 80px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400italic,400,700' rel='stylesheet' type='text/css'>
+  <link href='http://grommet.io/assets/latest/css/grommet.min.css' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="http://grommet.io/assets/latest/grommet.min.js"></script>
 </head>
 <body>
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <div id="content"></div>
+  <script type="text/babel">
+    var socket = io();
+    // React.Component {
+    //   socket.on('message', function(msg){
+    //     // console.log(msg);
+    //     // this.setState({ message: msg });
+    //     // console.log(msg);
+    //     // messages.push(message);
+    //     // this.setState({messages});
+    //   });
+    // }
+    var SomethingElse = React.createClass({
+      render: function() {
+        socket.on('message', function(msg){
+          console.log(msg);
+        });
+        this.setState({'test':'me'});
+      }
+    });
 
-<div class="row">
-  <div class="col-xs-3 text-left" id="sentiment">
-    <p>
-      Using <a href="https://dev.havenondemand.com/apis/analyzesentiment#overview" target="_blank">sentiment analysis</a>
-    </p>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-3 text-left" id="source-code">
-    <p>
-      <a href="https://github.com/tylernappy/politicians-twitter-sentiment-analysis" target="_blank">Source code</a> | send pull requests :)
-    </p>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-6 text-left" id="explanation">
-    <p>
-      Sentiment of tweets goes from -100% (negative) to 100% (positive)
-    </p>
-  </div>
-</div>
 
-<div class="row" id="candidates">
+    var HelloWorldDashboard = React.createClass({
+      render: function () {
+        return (
+          <Grommet.Tiles fill={true}>
+            <Grommet.Tile align="start">
+              <p>Hello from a Grommet page!</p>
+              <p>{this.state.text} Now, come back to the <a href="http://grommet.io/docs/documentation#understanding-grommet">Hello World</a> guide to continue your Grommet exploration.</p>
+            </Grommet.Tile>
+          </Grommet.Tiles>
+        );
+      }
+    });
 
-  <div class="col-xs-6">
-    <!-- Average stuff -->
-    <div class="row" id="bernie">
-      <div class="col-xs-12">
-        <div class="row">
-          <div class="col-xs-12 text-center">
-            <img src="img/donald.jpg" height="150px" alt="" />
+    var SentimentMeters = React.createClass({
+      render: function () {
+        return (
+          <div className="messages">
+            <Grommet.Meter legend={{"total": false}} series={[
+              {"label": "something", "value": 50, "colorIndex": "graph-1"},
+              {"label": "Hillary Clinton", "value": 200, "colorIndex": "graph-2"},
+              {"label": "Donald Trump", "value": 100, "colorIndex": "graph-3"},
+              {"label": "Ted Cruz", "value": 300, "colorIndex": "graph-4"},
+              {"label": "Ben Carson", "value": 300, "colorIndex": "graph-5"},
+              {"label": "Marco Rubio", "value": 300, "colorIndex": "graph-6"}
+            ]} vertical={true} />
           </div>
-        </div>
-        <!--  -->
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Average Sentiment</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="average-score-bernie">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Tweets</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="tweets-bernie">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Positive</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="positive-bernie">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Neutral</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="neutral-bernie">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Negative</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="negative-bernie">N/A</div>
-          </div>
-        </div>
-        <!--  -->
-      </div>
-    </div>
-    <!-- /Averge stuff -->
-    <!-- Instantanous stuff -->
-    <div class="row bottom-border" id="heading">
-      <div class="col-xs-4">User</div>
-      <div class="col-xs-5">Tweet</div>
-      <div class="col-xs-3">Overall Sentiment Score</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 messages-bernie">
-        <!-- stuff gets added here for messages -->
-      </div>
-    </div>
-    <!-- /Instantanous stuff -->
-  </div>
+        );
+      }
+    });
 
-  <div class="col-xs-6">
-    <!-- Average stuff -->
-    <div class="row" id="hillary">
-      <div class="col-xs-12">
-        <div class="row">
-          <div class="col-xs-12 text-center">
-            <img src="img/marco.jpg" height="150px" alt="" />
-          </div>
-        </div>
-        <!--  -->
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Average Sentiment</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="average-score-hillary">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Tweets</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="tweets-hillary">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Positive</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="positive-hillary">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Neutral</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="neutral-hillary">N/A</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 text-left">
-            <p>Negative</p>
-          </div>
-          <div class="col-xs-6 text-right" id="average-side">
-            <div id="negative-hillary">N/A</div>
-          </div>
-        </div>
-        <!--  -->
-      </div>
-    </div>
-    <!-- /Averge stuff -->
-    <!-- Instantanous stuff -->
-    <div class="row bottom-border" id="heading">
-      <div class="col-xs-4">User</div>
-      <div class="col-xs-5">Tweet</div>
-      <div class="col-xs-3">Overall Sentiment Score</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 messages-hillary">
-        <!-- stuff gets added here for messages -->
-      </div>
-    </div>
-    <!-- /Instantanous stuff -->
-  </div>
+    var App = React.createClass({
+      var socket = io();
+      setInitialConditions() {
+          var data = {text: "this is cool"};
+          this.setState(data);
+      },
 
-</div>
+      receivedTweet() {
+        socket.on('message', function(msg){
+          var data = {text: "this is cool"};
+          this.setState(data);
+          console.log(msg);
+        });
+      },
 
-<script>
-var socket = io();
-socket.on('tweetDataBernie', function(msg){
-  console.log(msg);
-  $("#average-score-bernie").html(Math.floor((msg.average*100* 100) / 100)+"%"); // <div id="average-score"></div>
-  $("#tweets-bernie").html(msg.n); //
-  $("#positive-bernie").html(msg.nPositive); //
-  $("#neutral-bernie").html(msg.nNeutral); //
-  $("#negative-bernie").html(msg.nNegative); //
-  $("#bernie").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
-  $(".messages-bernie").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + Math.floor((msg.aggregate.score*100* 100) / 100) + "%" + "</div></div></div>");
-});
-socket.on('tweetDataHillary', function(msg){
-  console.log(msg);
-  $("#average-score-hillary").html(Math.floor((msg.average*100* 100) / 100)+"%"); // <div id="average-score"></div>
-  $("#tweets-hillary").html(msg.n); //
-  $("#positive-hillary").html(msg.nPositive); //
-  $("#neutral-hillary").html(msg.nNeutral); //
-  $("#negative-hillary").html(msg.nNegative); //
-  $("#hillary").css("background-color","rgb(" + msg.rgbAverage.r + "," + msg.rgbAverage.g + "," + msg.rgbAverage.b + ")"); //<div class="col-xs-12 text-center" id="average-side">
-  $(".messages-hillary").prepend("<div class='row text-left' style='background-color: rgb(" + msg.rgbInstantaneous.r + "," + msg.rgbInstantaneous.g + "," + msg.rgbInstantaneous.b + ");'><div class='col-xs-2'><div id='user-profile-image'><img src='" + msg.tweet.user.profile_image_url_https + "' alt='' height='50'></div></div><div class='col-xs-2'><div id='user-name'>@" + msg.tweet.user.screen_name + "</div></div><div class='col-xs-5'><div id='tweet'>" + msg.tweet.text + "</div></div><div class='col-xs-3'><div id='aggregate'>" + Math.floor((msg.aggregate.score*100* 100) / 100) + "%" + "</div></div></div>");
-});
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      render: function() {
+        return (
+          <Grommet.App>
+            <Grommet.Header direction="row" justify="between" large={true} pad={{horizontal: 'medium'}}>
+              <Grommet.Title>Hello World</Grommet.Title>
+            </Grommet.Header>
+            <Grommet.Section pad={{horizontal: 'medium'}}>
+              <HelloWorldDashboard />
+            </Grommet.Section>
+            <Grommet.Section pad={{horizontal: 'medium'}}>
+              <SentimentMeters />
+            </Grommet.Section>
+          </Grommet.App>
+        );
+      }
+    });
 
-  ga('create', 'UA-68842515-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+    var element = document.getElementById('content');
+    ReactDOM.render(React.createElement(App), element);
+  </script>
 </body>
 </html>
