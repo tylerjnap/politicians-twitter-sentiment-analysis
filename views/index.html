@@ -19,16 +19,17 @@
   var socket = io();
 
   var SentimentMeters = React.createClass({
-
     getInitialState: function() {
       return {user: "", number: 0};
     },
 
+  _onMessageReceived: function (msg) {
+      console.log(msg);
+      this.setState({user: msg.user, number: msg.number});
+  },
+
     componentDidMount: function () {
-      socket.on('message', function(msg){
-        console.log(msg);
-        this.setState({user: msg.user, number: msg.number});
-      }.bind(this));
+      socket.on('message', this._onMessageReceived);
     },
 
     render: function () {
@@ -43,29 +44,6 @@
       );
     }
   });
-
-  // _onMessageReceived: function (msg) {
-  //     console.log(msg);
-  //     this.setState({user: msg.user});
-  // },
-
-  //   componentDidMount: function () {
-  //     socket.on('message', this.__onMessageReceived);
-  //   },
-  //
-  //   render: function () {
-  //     return (
-  //       <div className="messages">
-  //         <Grommet.Meter legend={{"total": false}} series={[
-  //           {"label": this.state.user, "value": 50, "colorIndex": "graph-1"},
-  //           {"label": "Update counter from websocket 2", "value": 200, "colorIndex": "graph-2"},
-  //           {"label": "Update counter from websocket 3", "value": 100, "colorIndex": "graph-3"},
-  //         ]} vertical={true} />
-  //       </div>
-  //     );
-  //   }
-
-  // });
 
     var App = React.createClass({
       render: function() {
