@@ -28,27 +28,99 @@
     getInitialState: function() {
       var data = {
         "Bernie Sanders": {
-          averages: {newAvg: 0, oldAvg: 0},
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
           n: 0,
-          nPositive: 0,
+          nNeutral: 0,
           nNegative: 0,
-          nNeutral: 0
+          nPositive: 0
         },
         "Hillary Clinton": {
-          averages: {newAvg: 0, oldAvg: 0},
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
           n: 0,
-          nPositive: 0,
+          nNeutral: 0,
           nNegative: 0,
-          nNeutral: 0
+          nPositive: 0
+        },
+        "Donald Trump": {
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
+          n: 0,
+          nNeutral: 0,
+          nNegative: 0,
+          nPositive: 0
         }
       }
       return data;
     },
 
-  _onMessageReceived: function (msg) {
+    _onMessageReceived: function (msg) {
       console.log(msg);
-      this.setState({user: msg.user, number: msg.number});
-  },
+      if (msg.candidate === "Bernie Sanders") {
+        this.setState({"Bernie Sanders": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: Math.floor(msg.average*100),
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else if (msg.candidate === "Hillary Clinton") {
+        this.setState({"Hillary Clinton": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: Math.floor(msg.average*100),
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else if (msg.candidate === "Donald Trump") {
+        this.setState({"Donald Trump": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: msg.average,
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else {
+        console.log("No candidate detected")
+      }
+    },
 
     componentDidMount: function () {
       socket.on('message', this._onMessageReceived);
@@ -61,9 +133,9 @@
             <Grommet.Article size="small">
               <Grommet.Header pad={{horizontal: 'medium'}}>Instantaneous Sentiments</Grommet.Header>
               <Grommet.Meter legend={{total: false}} min={{"value": 0, "label": "<-15%"}} max={{"value": 15, "label": ">15%"}} series={[
-                  {"label": "Bernie Sanders", "value": 1.4, "colorIndex": "graph-1"},
-                  {"label": "Hillary Clinton", "value": 4.5, "colorIndex": "graph-2"},
-                  {"label": "Donald Trump", "value": 15, "colorIndex": "graph-3"},
+                  {"label": "Bernie Sanders", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
+                  {"label": "Hillary Clinton", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-2"},
+                  {"label": "Donald Trump", "value": this.state["Donald Trump"].average, "colorIndex": "graph-3"},
                 ]} />
 
               <Grommet.Header pad={{horizontal: 'small'}}>Average Sentiment Over Time</Grommet.Header>
@@ -99,7 +171,7 @@
             </Grommet.Article>
             <Grommet.Tabs>
               <Grommet.Tab title="Bernie Sanders">
-                <Grommet.Box align="end">
+                <Grommet.Box>
                   <Grommet.Sidebar colorIndex="light-1">
                     <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
                     <Grommet.Image src="img/bernie.jpg" size="small" full={false} />

@@ -36,6 +36,14 @@ var hillaryClinton = {
   nNeutral: 0
 }
 
+var donaldTrump = {
+  averages: {newAvg: 0, oldAvg: 0},
+  n: 0,
+  nPositive: 0,
+  nNegative: 0,
+  nNeutral: 0
+}
+
 function twitterStream(candidate, candidateStrings, candidateData) {
   twitterClient.stream('statuses/filter', {track: candidateStrings}, function(stream) {
     stream.on('data', function(tweet) {
@@ -75,8 +83,9 @@ function twitterStream(candidate, candidateStrings, candidateData) {
   });
 }
 
-// twitterStream("Bernine Sanders", "Bernine Sanders,SenSanders", bernieSanders);
-// twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
+twitterStream("Bernie Sanders", "Bernie Sanders,SenSanders", bernieSanders);
+twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
+// twitterStream("Donald Trump", "Donald Trump,realDonaldTrump", donaldTrump);
 
 // setInterval(function(){
 //   var tweetData = {candidate: "candidate", tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
