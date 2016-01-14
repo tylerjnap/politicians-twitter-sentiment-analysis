@@ -60,10 +60,10 @@
           <Grommet.Split>
             <Grommet.Article size="small">
               <Grommet.Header pad={{horizontal: 'medium'}}>Instantaneous Sentiments</Grommet.Header>
-              <Grommet.Meter legend={{total: false}} series={[
-                  {"label": "Bernie Sanders", "value": 100, "colorIndex": "graph-1"},
-                  {"label": "Hillary Clinton", "value": 200, "colorIndex": "graph-2"},
-                  {"label": "Donald Trump", "value": 100, "colorIndex": "graph-3"},
+              <Grommet.Meter legend={{total: false}} min={{"value": 0, "label": "<-15%"}} max={{"value": 15, "label": ">15%"}} series={[
+                  {"label": "Bernie Sanders", "value": 1.4, "colorIndex": "graph-1"},
+                  {"label": "Hillary Clinton", "value": 4.5, "colorIndex": "graph-2"},
+                  {"label": "Donald Trump", "value": 15, "colorIndex": "graph-3"},
                 ]} />
 
               <Grommet.Header pad={{horizontal: 'small'}}>Average Sentiment Over Time</Grommet.Header>
@@ -97,16 +97,32 @@
               ]} />
 
             </Grommet.Article>
-            <Grommet.Box align="end">
-              <Grommet.Sidebar colorIndex="light-1">
-                <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
-                <Grommet.Image src="img/bernie.jpg" size="small" full={false} />
-                <Grommet.Article>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Bio</Grommet.Header>
-                  <Grommet.Section pad="medium">This is cool stuff</Grommet.Section>
-                </Grommet.Article>
-              </Grommet.Sidebar>
-            </Grommet.Box>
+            <Grommet.Tabs>
+              <Grommet.Tab title="Bernie Sanders">
+                <Grommet.Box align="end">
+                  <Grommet.Sidebar colorIndex="light-1">
+                    <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
+                    <Grommet.Image src="img/bernie.jpg" size="small" full={false} />
+                    <Grommet.Article>
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Bio</Grommet.Header>
+                      <Grommet.Section pad="medium">This is cool stuff</Grommet.Section>
+                    </Grommet.Article>
+                  </Grommet.Sidebar>
+                </Grommet.Box>
+              </Grommet.Tab>
+              <Grommet.Tab title="Hillary Clinton">
+                <Grommet.Box align="end">
+                  <Grommet.Sidebar colorIndex="light-1">
+                    <Grommet.Header pad={{horizontal: 'small'}}>Hillary Clinton</Grommet.Header>
+                    <Grommet.Image src="img/hillary.jpg" size="small" full={false} />
+                    <Grommet.Article>
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Bio</Grommet.Header>
+                      <Grommet.Section pad="medium">This is cool stuff</Grommet.Section>
+                    </Grommet.Article>
+                  </Grommet.Sidebar>
+                </Grommet.Box>
+              </Grommet.Tab>
+            </Grommet.Tabs>
           </Grommet.Split>
         </div>
       );
