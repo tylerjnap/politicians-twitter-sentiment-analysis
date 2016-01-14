@@ -25,7 +25,7 @@ var bernieSanders = {
   n: 0,
   nPositive: 0,
   nNegative: 0,
-  nNeutral: 0,
+  nNeutral: 0
 }
 
 var hillaryClinton = {
@@ -33,7 +33,7 @@ var hillaryClinton = {
   n: 0,
   nPositive: 0,
   nNegative: 0,
-  nNeutral: 0,
+  nNeutral: 0
 }
 
 function twitterStream(candidate, candidateStrings, candidateData) {
@@ -75,8 +75,13 @@ function twitterStream(candidate, candidateStrings, candidateData) {
   });
 }
 
-twitterStream("Bernine Sanders", "Bernine Sanders,SenSanders", bernieSanders);
-twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
+// twitterStream("Bernine Sanders", "Bernine Sanders,SenSanders", bernieSanders);
+// twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
+
+// setInterval(function(){
+//   var tweetData = {candidate: "candidate", tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
+//   io.emit('message', tweetData);
+// }, 3000)
 
 app.get("/", function(req, res){
   res.sendFile(__dirname + '/views/index.html');
