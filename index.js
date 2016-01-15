@@ -20,105 +20,99 @@ var twitterClient = new Twitter({
 port = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname, 'public')));
 
-var bernieSanders = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
+var candidateString = "SenSanders,HillaryClinton,realDonaldTrump,tedcruz,marcorubio,RealBenCarson"
+
+var candidateNumbers = {
+  "SenSanders": {
+    averages: {newAvg: 0, oldAvg: 0},
+    n: 0,
+    nPositive: 0,
+    nNegative: 0,
+    nNeutral: 0
+  },
+  "HillaryClinton": {
+    averages: {newAvg: 0, oldAvg: 0},
+    n: 0,
+    nPositive: 0,
+    nNegative: 0,
+    nNeutral: 0
+  },
+  "realDonaldTrump": {
+      averages: {newAvg: 0, oldAvg: 0},
+      n: 0,
+      nPositive: 0,
+      nNegative: 0,
+      nNeutral: 0
+  },
+  "tedcruz": {
+    averages: {newAvg: 0, oldAvg: 0},
+    n: 0,
+    nPositive: 0,
+    nNegative: 0,
+    nNeutral: 0
+  },
+  "marcorubio": {
+    averages: {newAvg: 0, oldAvg: 0},
+    n: 0,
+    nPositive: 0,
+    nNegative: 0,
+    nNeutral: 0
+  },
+  "RealBenCarson": {
+    averages: {newAvg: 0, oldAvg: 0},
+    n: 0,
+    nPositive: 0,
+    nNegative: 0,
+    nNeutral: 0
+  }
 }
 
-var hillaryClinton = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
-}
+twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
+  stream.on('data', function(tweet) {
+    var userMentions = tweet.entities.user_mentions;
+    for (var i=0; i<userMentions.length; i++) {
+      var screenName = userMentions[i].screen_name;
+      if (candidateNumbers[screenName] !== undefined) {
+        twitterStream(screenName, candidateNumbers[screenName], tweet)
+      }
+    }
+  });
 
-var donaldTrump = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
-}
+  stream.on('disconnect', function (disconnectMessage) {
+    console.log(disconnectMessage);
+  });
 
-var tedCruz = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
-}
+  stream.on('error', function(error) {
+    throw error;
+  });
+});
 
-var marcoRubio = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
-}
-
-var benCarson = {
-  averages: {newAvg: 0, oldAvg: 0},
-  n: 0,
-  nPositive: 0,
-  nNegative: 0,
-  nNeutral: 0
-}
-
-function twitterStream(candidate, candidateStrings, candidateData) {
-  twitterClient.stream('statuses/filter', {track: candidateStrings}, function(stream) {
-    stream.on('data', function(tweet) {
-      debugger;
-      var data = {text: tweet.text};
-      hodClient.call('analyzesentiment', data, function(err, resp){
-        if (!err) {
-          if (resp.body.aggregate !== undefined) {
-            candidateData.n += 1; //increase n by one
-            var sentiment = resp.body.aggregate.sentiment;
-            var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
-            if (score > 0) {
-              candidateData.nPositive += 1;
-            } else if(score < 0) {
-              candidateData.nNegative += 1;
-            } else {
-              candidateData.nNeutral += 1;
-            }
-            candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
-            rgbInstantaneous = mapColor(score);
-            rgbAverage = mapColor(candidateData.averages.newAvg);
-            console.log("------------------------------");
-            console.log(tweet.text + " | " + sentiment + " | " + score);
-            var tweetData = {candidate: candidate, tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
-            io.emit('message', tweetData);
-          }
+function twitterStream(candidate, candidateData, tweetObject) {
+  var data = {text: tweetObject.text};
+  hodClient.call('analyzesentiment', data, function(err, resp){
+    if (!err) {
+      if (resp.body.aggregate !== undefined) {
+        candidateData.n += 1; //increase n by one
+        var sentiment = resp.body.aggregate.sentiment;
+        var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
+        if (score > 0) {
+          candidateData.nPositive += 1;
+        } else if(score < 0) {
+          candidateData.nNegative += 1;
+        } else {
+          candidateData.nNeutral += 1;
         }
-      });
-    });
-
-    stream.on('disconnect', function (disconnectMessage) {
-      console.log(disconnectMessage);
-    });
-
-    stream.on('error', function(error) {
-      throw error;
-    });
+        candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
+        rgbInstantaneous = mapColor(score);
+        rgbAverage = mapColor(candidateData.averages.newAvg);
+        console.log("------------------------------");
+        console.log(tweetObject.text + " | " + sentiment + " | " + score);
+        var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
+        io.emit('message', tweetData);
+      }
+    }
   });
 }
-
-twitterStream("Bernie Sanders", "Bernie Sanders,SenSanders", bernieSanders);
-twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
-twitterStream("Donald Trump", "Donald Trump,realDonaldTrump", donaldTrump);
-twitterStream("Ted Cruz", "Ted Cruz,tedcruz", tedCruz);
-twitterStream("Marco Rubio", "Marco Rubio,marcorubio", marcoRubio);
-twitterStream("Ben Carson", "Ben Carson,RealBenCarson", benCarson);
-
-// setInterval(function(){
-//   var tweetData = {candidate: "candidate", tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
-//   io.emit('message', tweetData);
-// }, 3000)
 
 app.get("/", function(req, res){
   res.sendFile(__dirname + '/views/index.html');
