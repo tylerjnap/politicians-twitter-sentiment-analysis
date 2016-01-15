@@ -44,16 +44,41 @@ var donaldTrump = {
   nNeutral: 0
 }
 
+var tedCruz = {
+  averages: {newAvg: 0, oldAvg: 0},
+  n: 0,
+  nPositive: 0,
+  nNegative: 0,
+  nNeutral: 0
+}
+
+var marcoRubio = {
+  averages: {newAvg: 0, oldAvg: 0},
+  n: 0,
+  nPositive: 0,
+  nNegative: 0,
+  nNeutral: 0
+}
+
+var benCarson = {
+  averages: {newAvg: 0, oldAvg: 0},
+  n: 0,
+  nPositive: 0,
+  nNegative: 0,
+  nNeutral: 0
+}
+
 function twitterStream(candidate, candidateStrings, candidateData) {
   twitterClient.stream('statuses/filter', {track: candidateStrings}, function(stream) {
     stream.on('data', function(tweet) {
+      debugger;
       var data = {text: tweet.text};
       hodClient.call('analyzesentiment', data, function(err, resp){
         if (!err) {
           if (resp.body.aggregate !== undefined) {
             candidateData.n += 1; //increase n by one
             var sentiment = resp.body.aggregate.sentiment;
-            var score = resp.body.aggregate.score;
+            var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
             if (score > 0) {
               candidateData.nPositive += 1;
             } else if(score < 0) {
@@ -85,7 +110,10 @@ function twitterStream(candidate, candidateStrings, candidateData) {
 
 twitterStream("Bernie Sanders", "Bernie Sanders,SenSanders", bernieSanders);
 twitterStream("Hillary Clinton", "Hillary Clinton,HillaryClinton", hillaryClinton);
-// twitterStream("Donald Trump", "Donald Trump,realDonaldTrump", donaldTrump);
+twitterStream("Donald Trump", "Donald Trump,realDonaldTrump", donaldTrump);
+twitterStream("Ted Cruz", "Ted Cruz,tedcruz", tedCruz);
+twitterStream("Marco Rubio", "Marco Rubio,marcorubio", marcoRubio);
+twitterStream("Ben Carson", "Ben Carson,RealBenCarson", benCarson);
 
 // setInterval(function(){
 //   var tweetData = {candidate: "candidate", tweet: tweet, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};

@@ -65,6 +65,45 @@
           nNeutral: 0,
           nNegative: 0,
           nPositive: 0
+        },
+        "Ted Cruz": {
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
+          n: 0,
+          nNeutral: 0,
+          nNegative: 0,
+          nPositive: 0
+        },
+        "Marco Rubio": {
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
+          n: 0,
+          nNeutral: 0,
+          nNegative: 0,
+          nPositive: 0
+        },
+        "Ben Carson": {
+          tweet: "",
+          positive: {},
+          negative: {},
+          aggregate: {},
+          rgbInstantaneous: {},
+          rgbAverage: {},
+          average: 0.0,
+          n: 0,
+          nNeutral: 0,
+          nNegative: 0,
+          nPositive: 0
         }
       }
       return data;
@@ -80,7 +119,7 @@
           aggregate: msg.aggregate,
           rgbInstantaneous: msg.rgbInstantaneous,
           rgbAverage: msg.rgbAverage,
-          average: Math.floor(msg.average*100),
+          average: Math.floor(msg.average),
           n: msg.n,
           nNeutral: msg.nNeutral,
           nNegative: msg.nNegative,
@@ -95,7 +134,7 @@
           aggregate: msg.aggregate,
           rgbInstantaneous: msg.rgbInstantaneous,
           rgbAverage: msg.rgbAverage,
-          average: Math.floor(msg.average*100),
+          average: Math.floor(msg.average),
           n: msg.n,
           nNeutral: msg.nNeutral,
           nNegative: msg.nNegative,
@@ -110,7 +149,52 @@
           aggregate: msg.aggregate,
           rgbInstantaneous: msg.rgbInstantaneous,
           rgbAverage: msg.rgbAverage,
-          average: msg.average,
+          average: Math.floor(msg.average),
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else if (msg.candidate === "Ted Cruz") {
+        this.setState({"Ted Cruz": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: Math.floor(msg.average),
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else if (msg.candidate === "Marco Rubio") {
+        this.setState({"Marco Rubio": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: Math.floor(msg.average),
+          n: msg.n,
+          nNeutral: msg.nNeutral,
+          nNegative: msg.nNegative,
+          nPositive: msg.nPositive
+          }
+        });
+      } else if (msg.candidate === "Ben Carson") {
+        this.setState({"Ben Carson": {
+          tweet: msg.tweet,
+          positive: msg.positive,
+          negative: msg.negative,
+          aggregate: msg.aggregate,
+          rgbInstantaneous: msg.rgbInstantaneous,
+          rgbAverage: msg.rgbAverage,
+          average: Math.floor(msg.average),
           n: msg.n,
           nNeutral: msg.nNeutral,
           nNegative: msg.nNegative,
@@ -118,7 +202,7 @@
           }
         });
       } else {
-        console.log("No candidate detected")
+        console.log("No candidate detected");
       }
     },
 
@@ -131,14 +215,17 @@
         <div className="messages">
           <Grommet.Split>
             <Grommet.Article size="small">
-              <Grommet.Header pad={{horizontal: 'medium'}}>Instantaneous Sentiments</Grommet.Header>
-              <Grommet.Meter legend={{total: false}} min={{"value": 0, "label": "<-15%"}} max={{"value": 15, "label": ">15%"}} series={[
-                  {"label": "Bernie Sanders", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
-                  {"label": "Hillary Clinton", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-2"},
-                  {"label": "Donald Trump", "value": this.state["Donald Trump"].average, "colorIndex": "graph-3"},
+              <Grommet.Header pad={{horizontal: 'medium'}}>Current Average Public Sentiment from 0 to 100</Grommet.Header>
+              <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                  {"label": "Sanders", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
+                  {"label": "Clinton", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-2"},
+                  {"label": "Trump", "value": this.state["Donald Trump"].average, "colorIndex": "graph-3"},
+                  {"label": "Cruz", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-4"},
+                  {"label": "Rubio", "value": this.state["Marco Rubio"].average, "colorIndex": "graph-5"},
+                  {"label": "Carson", "value": this.state["Ben Carson"].average, "colorIndex": "graph-6"},
                 ]} />
 
-              <Grommet.Header pad={{horizontal: 'small'}}>Average Sentiment Over Time</Grommet.Header>
+              <Grommet.Header pad={{horizontal: 'small'}}>Past Average Public Sentiment By Day from 0 to 100</Grommet.Header>
               <Grommet.Chart series={[
                 {
                   "label": "first",
@@ -205,9 +292,6 @@
       render: function() {
         return (
           <Grommet.App>
-            <Grommet.Header direction="row" justify="between" large={true} pad={{horizontal: 'medium'}}>
-              <Grommet.Title>Politician Sentiment Analysis</Grommet.Title>
-            </Grommet.Header>
             <Grommet.Section pad={{horizontal: 'medium'}}>
               <SentimentMeters />
             </Grommet.Section>
