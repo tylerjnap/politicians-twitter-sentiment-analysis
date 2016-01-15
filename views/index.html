@@ -224,7 +224,15 @@
                   {"label": "Rubio", "value": this.state["Marco Rubio"].average, "colorIndex": "graph-5"},
                   {"label": "Carson", "value": this.state["Ben Carson"].average, "colorIndex": "graph-6"},
                 ]} />
-
+              <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
+              <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 30000, "label": "30,000"}} series={[
+                  {"label": "Sanders", "value": this.state["Bernie Sanders"].n, "colorIndex": "graph-1"},
+                  {"label": "Clinton", "value": this.state["Hillary Clinton"].n, "colorIndex": "graph-2"},
+                  {"label": "Trump", "value": this.state["Donald Trump"].n, "colorIndex": "graph-3"},
+                  {"label": "Cruz", "value": this.state["Ted Cruz"].n, "colorIndex": "graph-4"},
+                  {"label": "Rubio", "value": this.state["Marco Rubio"].n, "colorIndex": "graph-5"},
+                  {"label": "Carson", "value": this.state["Ben Carson"].n, "colorIndex": "graph-6"},
+                ]} />
               <Grommet.Header pad={{horizontal: 'small'}}>Past Average Public Sentiment By Day from 0 to 100</Grommet.Header>
               <Grommet.Chart series={[
                 {
