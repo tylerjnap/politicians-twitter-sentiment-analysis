@@ -131,7 +131,6 @@ function twitterStream(candidate, candidateData, tweetObject) {
         }
         //
         candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
-        candidateData.averagesWindow1 = calculateRunningAverage(score, candidateData.nWindow1, candidateData.averagesWindow1);
         rgbInstantaneous = mapColor(score);
         rgbAverage = mapColor(candidateData.averages.newAvg);
         console.log("------------------------------");
@@ -166,6 +165,7 @@ function calculateRunningAverage(score, n, averages) {
 }
 
 function calculateRunningAverage(score, n, averages) {
+  debugger;
   averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
   averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
   return averages;
@@ -177,6 +177,5 @@ function calculateRunningAverageWindow(array, win) {
     runsum += array[i];
   }
   var avg = runsum/win;
-  debugger
   return avg;
 }
