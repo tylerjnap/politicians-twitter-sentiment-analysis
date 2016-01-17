@@ -21,6 +21,7 @@ port = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname, 'public')));
 
 var candidateString = "SenSanders,HillaryClinton,realDonaldTrump,tedcruz,marcorubio,RealBenCarson"
+var window1 = 10;
 
 var candidateNumbers = {
   "SenSanders": {
@@ -28,44 +29,63 @@ var candidateNumbers = {
     n: 0,
     nPositive: 0,
     nNegative: 0,
-    nNeutral: 0
+    nNeutral: 0,
+    runningAverageWindow1: 0,
+    nWindow1: 0,
+    runningAverageWindow1Array: []
   },
   "HillaryClinton": {
     averages: {newAvg: 0, oldAvg: 0},
     n: 0,
     nPositive: 0,
     nNegative: 0,
-    nNeutral: 0
+    nNeutral: 0,
+    runningAverageWindow1: 0,
+    nWindow1: 0,
+    runningAverageWindow1Array: []
   },
   "realDonaldTrump": {
       averages: {newAvg: 0, oldAvg: 0},
       n: 0,
       nPositive: 0,
       nNegative: 0,
-      nNeutral: 0
+      nNeutral: 0,
+      runningAverageWindow1: 0,
+      nWindow1: 0,
+      runningAverageWindow1Array: []
   },
   "tedcruz": {
     averages: {newAvg: 0, oldAvg: 0},
     n: 0,
     nPositive: 0,
     nNegative: 0,
-    nNeutral: 0
+    nNeutral: 0,
+    runningAverageWindow1: 0,
+    nWindow1: 0,
+    runningAverageWindow1Array: []
   },
   "marcorubio": {
     averages: {newAvg: 0, oldAvg: 0},
     n: 0,
     nPositive: 0,
     nNegative: 0,
-    nNeutral: 0
+    nNeutral: 0,
+    runningAverageWindow1: 0,
+    nWindow1: 0,
+    runningAverageWindow1Array: []
   },
   "RealBenCarson": {
     averages: {newAvg: 0, oldAvg: 0},
     n: 0,
     nPositive: 0,
     nNegative: 0,
-    nNeutral: 0
+    nNeutral: 0,
+    runningAverageWindow1: 0,
+    nWindow1: 0,
+    runningAverageWindow1Array: []
   }
 }
+
 
 twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
   stream.on('data', function(tweet) {
@@ -93,21 +113,30 @@ function twitterStream(candidate, candidateData, tweetObject) {
     if (!err) {
       if (resp.body.aggregate !== undefined) {
         candidateData.n += 1; //increase n by one
+        candidateData.nWindow1 +=1 ; //increase by one
         var sentiment = resp.body.aggregate.sentiment;
-        var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
-        if (score > 0) {
+        var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50.0; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
+        if (score > 50) {
           candidateData.nPositive += 1;
-        } else if(score < 0) {
+        } else if(score < 50) {
           candidateData.nNegative += 1;
         } else {
           candidateData.nNeutral += 1;
         }
+        //perform running averages window
+        candidateData.runningAverageWindow1Array.push(score);
+        if (candidateData.runningAverageWindow1Array.length > window1) { //if there is enough data points in the window
+          candidateData.runningAverageWindow1Array.splice(0,1);
+          candidateData.runningAverageWindow1 = calculateRunningAverageWindow(candidateData.runningAverageWindow1Array, window1)
+        }
+        //
         candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
+        candidateData.averagesWindow1 = calculateRunningAverage(score, candidateData.nWindow1, candidateData.averagesWindow1);
         rgbInstantaneous = mapColor(score);
         rgbAverage = mapColor(candidateData.averages.newAvg);
         console.log("------------------------------");
         console.log(tweetObject.text + " | " + sentiment + " | " + score);
-        var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
+        var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
         io.emit('message', tweetData);
       }
     }
@@ -122,7 +151,7 @@ http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
 
-mapColor = function (score) {
+function mapColor(score) {
   weight = Math.floor(((0.5*score + 0.5)*100));
   r = Math.floor( (255 * (100 - weight)) / 100 );
   g = Math.floor( (255 * weight) / 100 );
@@ -130,8 +159,24 @@ mapColor = function (score) {
   return {r: r, g: g, b:b};
 }
 
-calculateRunningAverage = function(score, n, averages) {
+function calculateRunningAverage(score, n, averages) {
   averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
   averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
-  return averages
+  return averages;
+}
+
+function calculateRunningAverage(score, n, averages) {
+  averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
+  averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
+  return averages;
+}
+
+function calculateRunningAverageWindow(array, win) {
+  var runsum = 0.0;
+  for (var i=0; i<win; i++) {
+    runsum += array[i];
+  }
+  var avg = runsum/win;
+  debugger
+  return avg;
 }
