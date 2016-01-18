@@ -89,11 +89,13 @@ var candidateNumbers = {
 
 twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
   stream.on('data', function(tweet) {
-    var userMentions = tweet.entities.user_mentions;
-    for (var i=0; i<userMentions.length; i++) {
-      var screenName = userMentions[i].screen_name;
-      if (candidateNumbers[screenName] !== undefined) {
-        twitterStream(screenName, candidateNumbers[screenName], tweet)
+    if (tweet.entities !== undefined) {
+      var userMentions = tweet.entities.user_mentions;
+      for (var i=0; i<userMentions.length; i++) {
+        var screenName = userMentions[i].screen_name;
+        if (candidateNumbers[screenName] !== undefined) {
+          twitterStream(screenName, candidateNumbers[screenName], tweet)
+        }
       }
     }
   });
@@ -138,6 +140,8 @@ function twitterStream(candidate, candidateData, tweetObject) {
         var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
         io.emit('message', tweetData);
       }
+    } else {
+      console.log(err);
     }
   });
 }
