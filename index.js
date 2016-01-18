@@ -8,7 +8,7 @@ var io = require('socket.io')(http);
 var Twitter = require('twitter');
 var havenondemand = require('havenondemand');
 
-var hodClient = new havenondemand.HODClient('http://api.havenondemand.com', process.env.hpe_apikey);
+var hodClient = new havenondemand.HODClient(process.env.hpe_apikey);
 
 var twitterClient = new Twitter({
   consumer_key: process.env.consumer_key,
