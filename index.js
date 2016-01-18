@@ -112,7 +112,8 @@ twitterClient.stream('statuses/filter', {track: candidateString}, function(strea
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};
   hodClient.call('analyzesentiment', data, function(err, resp){
-    if (!err) {
+    // debugger;
+    if (!err && !resp.body.error) {
       if (resp.body.aggregate !== undefined) {
         candidateData.n += 1; //increase n by one
         candidateData.nWindow1 +=1 ; //increase by one
@@ -141,6 +142,8 @@ function twitterStream(candidate, candidateData, tweetObject) {
         io.emit('message', tweetData);
       }
     } else {
+      if (resp.body.error) {console.log(resp.body.error);}
+      console.log("------------------");
       console.log(err);
     }
   });
