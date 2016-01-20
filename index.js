@@ -110,27 +110,27 @@ http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
 
-twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
-  stream.on('data', function(tweet) {
-    if (tweet.entities !== undefined) {
-      var userMentions = tweet.entities.user_mentions;
-      for (var i=0; i<userMentions.length; i++) {
-        var screenName = userMentions[i].screen_name;
-        if (candidateNumbers[screenName] !== undefined) {
-          twitterStream(screenName, candidateNumbers[screenName], tweet)
-        }
-      }
-    }
-  });
-
-  stream.on('disconnect', function (disconnectMessage) {
-    console.log(disconnectMessage);
-  });
-
-  stream.on('error', function(error) {
-    throw error;
-  });
-});
+// twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
+//   stream.on('data', function(tweet) {
+//     if (tweet.entities !== undefined) {
+//       var userMentions = tweet.entities.user_mentions;
+//       for (var i=0; i<userMentions.length; i++) {
+//         var screenName = userMentions[i].screen_name;
+//         if (candidateNumbers[screenName] !== undefined) {
+//           twitterStream(screenName, candidateNumbers[screenName], tweet)
+//         }
+//       }
+//     }
+//   });
+//
+//   stream.on('disconnect', function (disconnectMessage) {
+//     console.log(disconnectMessage);
+//   });
+//
+//   stream.on('error', function(error) {
+//     throw error;
+//   });
+// });
 
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};

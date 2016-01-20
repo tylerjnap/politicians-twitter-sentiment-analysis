@@ -279,6 +279,22 @@
                             {"label": "Instantaneous", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-2"},
                           ]} />
                     </Grommet.Article>
+                    <Grommet.Table>
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Summary</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% for (var i=0; i<candidateArticles["Bernie Sanders"].length; i++) { %>
+                      <Grommet.TableRow>
+                        <td><a href="<%= candidateArticles["Bernie Sanders"][i].reference %>" target="_blank"><%= candidateArticles["Bernie Sanders"][i].title %></a></td>
+                        <td><%= candidateArticles["Bernie Sanders"][i].summary %></td>
+                      </Grommet.TableRow>
+                      <% } %>
+                      </tbody>
+                    </Grommet.Table>
                   </Grommet.Sidebar>
                 </Grommet.Box>
               </Grommet.Tab>
