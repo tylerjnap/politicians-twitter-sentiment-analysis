@@ -7,6 +7,7 @@ var path = require('path');
 var io = require('socket.io')(http);
 var Twitter = require('twitter');
 var havenondemand = require('havenondemand');
+var async = require("async");
 
 var hodClient = new havenondemand.HODClient(process.env.hpe_apikey);
 
@@ -86,6 +87,24 @@ var candidateNumbers = {
   }
 }
 
+var articleUpdateInterval = 60000*15; //15 minutes
+
+var candidateArticles = {
+  "Bernie Sanders": [],
+  "Hillary Clinton": [],
+  "Donald Trump": [],
+  "Ted Cruz": [],
+  "Marco Rubio": [],
+  "Ben Carson": []
+};
+
+app.get("/", function(req, res){
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+http.listen(port, function(){
+  console.log("Listening on port: "+port);
+});
 
 twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
   stream.on('data', function(tweet) {
@@ -149,13 +168,27 @@ function twitterStream(candidate, candidateData, tweetObject) {
   });
 }
 
-app.get("/", function(req, res){
-  res.sendFile(__dirname + '/views/index.html');
-});
+// functions for updating articles
+updateCandidateArticles();
+setInterval(updateCandidateArticles(), articleUpdateInterval);
 
-http.listen(port, function(){
-  console.log("Listening on port: "+port);
-});
+function updateCandidateArticles() {
+  async.forEachOf(candidateArticles, function (value, key, callback) {
+    var data = {text: key, indexes: ['news_eng', 'news_fra', 'wiki_spa', 'news_ger', 'news_ita'], summary: 'quick', total_results: 'false'};
+    hodClient.call('findsimilar', data, function(err, resp) {
+      if (!err && !resp.body.error) {
+        console.log(resp.body.documents);
+        candidateArticles[key] = resp.body.documents;
+      } else {
+        console.log("------------------");
+        if (resp.body.error) {console.log(resp.body.error);}
+        console.log(err);
+      }
+    })
+  }, function (err) {
+      if (err) console.error(err.message);
+  });
+}
 
 function mapColor(score) {
   weight = Math.floor(((0.5*score + 0.5)*100));
@@ -166,13 +199,6 @@ function mapColor(score) {
 }
 
 function calculateRunningAverage(score, n, averages) {
-  averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
-  averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
-  return averages;
-}
-
-function calculateRunningAverage(score, n, averages) {
-  debugger;
   averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
   averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
   return averages;
