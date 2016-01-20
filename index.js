@@ -20,6 +20,8 @@ var twitterClient = new Twitter({
 
 port = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 var candidateString = "SenSanders,HillaryClinton,realDonaldTrump,tedcruz,marcorubio,RealBenCarson"
 var window1 = 10;
@@ -99,7 +101,9 @@ var candidateArticles = {
 };
 
 app.get("/", function(req, res){
-  res.sendFile(__dirname + '/views/index.html');
+  res.render('index', {
+    candidateArticles: candidateArticles
+  });
 });
 
 http.listen(port, function(){
