@@ -267,23 +267,22 @@
             <Grommet.Tabs>
               <Grommet.Tab title="Bernie Sanders">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
-                    <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
-                    <Grommet.Image src="img/bernie.jpg" size="small" full={false} />
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Bernie Sanders"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Bernie Sanders"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Bernie Sanders"].nNeutral, "colorIndex": "graph-3"}
+                  <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
+                  <Grommet.Image src="img/bernie.jpg" size="small" full={false} />
+                  <Grommet.Article>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
+                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
+                        {"label": "Positive", "value": this.state["Bernie Sanders"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["Bernie Sanders"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["Bernie Sanders"].nNeutral, "colorIndex": "graph-3"}
+                      ]} />
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
+                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                          {"label": "Daily Average", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                    <Grommet.Table>
+                  </Grommet.Article>
+                  <Grommet.Table>
                       <thead>
                         <tr>
                           <th>Title</th>
@@ -299,7 +298,6 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  </Grommet.Sidebar>
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Hillary Clinton">
@@ -443,7 +441,7 @@
     ga('send', 'pageview');
   </script>
 </body>
-<script>
+<!-- <script>
     // var length = <%= candidateArticles["Bernie Sanders"].concepts.length %>;
     // var array = [];
     // for (var i=0; i<length; i++) {
@@ -485,7 +483,7 @@
 //                 })
 //                 .text(function(d) { return d.text; });
 //     }
-// </script>
+// </script> -->
 
 <div style="width: 40%;">
     <div class="legend">

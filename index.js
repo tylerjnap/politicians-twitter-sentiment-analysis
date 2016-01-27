@@ -180,8 +180,8 @@ setInterval(updateCandidateArticles(), articleUpdateInterval);
 function updateCandidateArticles() {
   async.forEachOf(candidateArticles, function (value1, key1, callback1) {
     candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
-    var data1 = {text: key1, indexes: ['news_eng', 'news_fra', 'wiki_spa', 'news_ger', 'news_ita'], summary: 'quick', total_results: 'false'};
-    hodClient.call('findsimilar', data1, function(err1, resp1) {
+    var data1 = {text: key1, indexes: ['news_eng'], summary: 'quick', total_results: 'false'};
+    hodClient.call('querytextindex', data1, function(err1, resp1) {
       if (!err1 && !resp1.body.error) {
         console.log(resp1.body.documents);
         var articles = resp1.body.documents;
