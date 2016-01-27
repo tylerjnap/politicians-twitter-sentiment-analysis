@@ -92,17 +92,18 @@ var candidateNumbers = {
 var articleUpdateInterval = 60000*15; //15 minutes
 
 var candidateArticles = {
-  "Bernie Sanders": [],
-  "Hillary Clinton": [],
-  "Donald Trump": [],
-  "Ted Cruz": [],
-  "Marco Rubio": [],
-  "Ben Carson": []
+  "Bernie Sanders": {articles: [], concepts: []},
+  "Hillary Clinton": {articles: [], concepts: []},
+  "Donald Trump": {articles: [], concepts: []},
+  "Ted Cruz": {articles: [], concepts: []},
+  "Marco Rubio": {articles: [], concepts: []},
+  "Ben Carson": {articles: [], concepts: []}
 };
 
 app.get("/", function(req, res){
   res.render('index', {
-    candidateArticles: candidateArticles
+    candidateArticles: candidateArticles,
+    candidateConcepts: JSON.stringify({concepts: candidateArticles["Bernie Sanders"].concepts})
   });
 });
 
@@ -177,22 +178,40 @@ updateCandidateArticles();
 setInterval(updateCandidateArticles(), articleUpdateInterval);
 
 function updateCandidateArticles() {
-  async.forEachOf(candidateArticles, function (value, key, callback) {
-    var data = {text: key, indexes: ['news_eng', 'news_fra', 'wiki_spa', 'news_ger', 'news_ita'], summary: 'quick', total_results: 'false'};
-    hodClient.call('findsimilar', data, function(err, resp) {
-      if (!err && !resp.body.error) {
-        console.log(resp.body.documents);
-        candidateArticles[key] = resp.body.documents;
+  async.forEachOf(candidateArticles, function (value1, key1, callback1) {
+    candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
+    var data1 = {text: key1, indexes: ['news_eng', 'news_fra', 'wiki_spa', 'news_ger', 'news_ita'], summary: 'quick', total_results: 'false'};
+    hodClient.call('findsimilar', data1, function(err1, resp1) {
+      if (!err1 && !resp1.body.error) {
+        console.log(resp1.body.documents);
+        var articles = resp1.body.documents;
+        candidateArticles[key1].articles = articles;
+        async.forEachOf(articles, function (value2, key2, callback2) {
+          var data2 = {url: value2.reference};
+          hodClient.call('extractconcepts', data2, function(err2, resp2) {
+            var concepts = resp2.body.concepts;
+            async.each(concepts, function(concept, callback) {
+              var newDict = {"text": concept.concept, "size": concept.occurrences}
+              candidateArticles[key1].concepts.push(newDict);
+            }, function (err) {
+              if (err) console.error(err.message);
+            });
+          });
+        }, function (err) {
+          if (err) console.error(err.message);
+        });
       } else {
         console.log("------------------");
-        if (resp.body.error) {console.log(resp.body.error);}
-        console.log(err);
+        if (resp1.body.error) {console.log(resp1.body.error);}
+        console.log(err1);
       }
-    })
+    });
   }, function (err) {
       if (err) console.error(err.message);
   });
 }
+
+setInterval(function(){debugger;}, 6000);
 
 function mapColor(score) {
   weight = Math.floor(((0.5*score + 0.5)*100));

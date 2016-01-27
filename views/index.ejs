@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 <head>
   <meta charset="UTF-8">
   <title>Politician Sentiment Analysis</title>
@@ -287,10 +289,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <% for (var i=0; i<candidateArticles["Bernie Sanders"].length; i++) { %>
+                      <% for (var i=0; i<candidateArticles["Bernie Sanders"].articles.length; i++) { %>
                       <Grommet.TableRow>
-                        <td><a href="<%= candidateArticles["Bernie Sanders"][i].reference %>" target="_blank"><%= candidateArticles["Bernie Sanders"][i].title %></a></td>
-                        <td><%= candidateArticles["Bernie Sanders"][i].summary %></td>
+                        <td><a href="<%= candidateArticles["Bernie Sanders"].articles[i].reference %>" target="_blank"><%= candidateArticles["Bernie Sanders"].articles[i].title %></a></td>
+                        <td><%= candidateArticles["Bernie Sanders"].articles[i].summary %></td>
                       </Grommet.TableRow>
                       <% } %>
                       </tbody>
@@ -439,4 +441,54 @@
     ga('send', 'pageview');
   </script>
 </body>
+<script>
+    // var length = <%= candidateArticles["Bernie Sanders"].concepts.length %>;
+    // var array = [];
+    // for (var i=0; i<length; i++) {
+    //   var text = "<%= candidateArticles["Bernie Sanders"].concepts[i].text %>";
+    //   var size = <%= candidateArticles["Bernie Sanders"].concepts[i].size %>;
+    //   array.push({text: text, size: size});
+    // }
+//     var array = <%= JSON.parse(candidateConcepts).concepts %>
+//     var frequency_list = array;
+//
+//
+//     var color = d3.scale.linear()
+//             .domain([0,1,2,3,4,5,6,10,15,20,100])
+//             .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+//
+//     d3.layout.cloud().size([800, 300])
+//             .words(frequency_list)
+//             .rotate(0)
+//             .fontSize(function(d) { return d.size; })
+//             .on("end", draw)
+//             .start();
+//
+//     function draw(words) {
+//         d3.select("body").append("svg")
+//                 .attr("width", 850)
+//                 .attr("height", 350)
+//                 .attr("class", "wordcloud")
+//                 .append("g")
+//                 // without the transform, words words would get cutoff to the left and top, they would
+//                 // appear outside of the SVG area
+//                 .attr("transform", "translate(320,200)")
+//                 .selectAll("text")
+//                 .data(words)
+//                 .enter().append("text")
+//                 .style("font-size", function(d) { return d.size + "px"; })
+//                 .style("fill", function(d, i) { return color(i); })
+//                 .attr("transform", function(d) {
+//                     return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+//                 })
+//                 .text(function(d) { return d.text; });
+//     }
+// </script>
+
+<div style="width: 40%;">
+    <div class="legend">
+        Commonly used words are larger and slightly faded in color.  Less common words are smaller and darker.
+    </div>
+
+</div>
 </html>
