@@ -282,10 +282,12 @@
                           {"label": "Instantaneous", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
                   </Grommet.Article>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
                   <Grommet.Table>
                       <thead>
                         <tr>
                           <th>Title</th>
+                          <th>Preview</th>
                           <th>Summary</th>
                         </tr>
                       </thead>
@@ -293,6 +295,7 @@
                       <% for (var i=0; i<candidateArticles["Bernie Sanders"].articles.length; i++) { %>
                       <Grommet.TableRow>
                         <td><a href="<%= candidateArticles["Bernie Sanders"].articles[i].reference %>" target="_blank"><%= candidateArticles["Bernie Sanders"].articles[i].title %></a></td>
+                        <td><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
                         <td><%= candidateArticles["Bernie Sanders"].articles[i].summary %></td>
                       </Grommet.TableRow>
                       <% } %>

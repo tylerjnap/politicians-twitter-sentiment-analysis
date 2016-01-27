@@ -103,7 +103,7 @@ var candidateArticles = {
 app.get("/", function(req, res){
   res.render('index', {
     candidateArticles: candidateArticles,
-    candidateConcepts: JSON.stringify({concepts: candidateArticles["Bernie Sanders"].concepts})
+    candidateConcepts: candidateArticles["Bernie Sanders"].concepts
   });
 });
 
