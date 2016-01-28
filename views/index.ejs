@@ -295,7 +295,7 @@
                       <% for (var i=0; i<candidateArticles["Bernie Sanders"].articles.length; i++) { %>
                       <Grommet.TableRow>
                         <td><a href="<%= candidateArticles["Bernie Sanders"].articles[i].reference %>" target="_blank"><%= candidateArticles["Bernie Sanders"].articles[i].title %></a></td>
-                        <td><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                        <td className="bernie-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
                         <td><%= candidateArticles["Bernie Sanders"].articles[i].summary %></td>
                       </Grommet.TableRow>
                       <% } %>
@@ -443,6 +443,20 @@
     ga('create', 'UA-68842515-1', 'auto');
     ga('send', 'pageview');
   </script>
+  <script>
+  $(window).load(function() {
+    var arr = ["bernie", "hillary", "donald", "ted", "marco", "ben"];
+    for (var i=0; i<arr.length; i++) {
+      for (var j=0; j<6; j++) {
+        console.log('.'+arr[i]+'-'+j);
+        var myElem = document.getElementsByClassName(arr[i]+'-'+j);
+        if (myElem.length > 0) {
+          $('.'+arr[i]+'-'+j).colorbox({html:"<h1>"+j+"</h1>"});
+        }
+      }
+    }
+  });
+  </script>
 </body>
 <!-- <script>
     // var length = <%= candidateArticles["Bernie Sanders"].concepts.length %>;
@@ -452,7 +466,7 @@
     //   var size = <%= candidateArticles["Bernie Sanders"].concepts[i].size %>;
     //   array.push({text: text, size: size});
     // }
-//     var array = <%= JSON.parse(candidateConcepts).concepts %>
+//     var array = <%= candidateConcepts.concepts %>
 //     var frequency_list = array;
 //
 //

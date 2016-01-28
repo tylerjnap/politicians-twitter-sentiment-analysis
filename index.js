@@ -186,8 +186,18 @@ function updateCandidateArticles() {
         console.log(resp1.body.documents);
         var articles = resp1.body.documents;
         candidateArticles[key1].articles = articles;
-        async.forEachOf(articles, function (value2, key2, callback2) {
-          var data2 = {url: value2.reference};
+        async.each(articles, function (article, callback2) {
+          console.log(article)
+          var data2 = {url: article.reference};
+          hodClient.call('viewdocument', data2, function(err3, resp3) {
+            if (!err3 && !resp3.body.error) {
+              var html = resp3.body;
+              article.html = html;
+            } else {
+              console.log(resp3);
+              console.log(err3);
+            }
+          });
           hodClient.call('extractconcepts', data2, function(err2, resp2) {
             var concepts = resp2.body.concepts;
             async.each(concepts, function(concept, callback) {
