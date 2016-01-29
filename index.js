@@ -100,12 +100,17 @@ var candidateArticles = {
   "Ben Carson": {articles: [], concepts: []}
 };
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
   res.render('index', {
     candidateArticles: candidateArticles,
     candidateConcepts: candidateArticles["Bernie Sanders"].concepts
   });
 });
+
+app.get("/candidatehtml", function(req, res) {
+  var payload = candidateArticles
+  res.status(200).send(payload)
+})
 
 http.listen(port, function(){
   console.log("Listening on port: "+port);
