@@ -116,27 +116,27 @@ http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
 
-// twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
-//   stream.on('data', function(tweet) {
-//     if (tweet.entities !== undefined) {
-//       var userMentions = tweet.entities.user_mentions;
-//       for (var i=0; i<userMentions.length; i++) {
-//         var screenName = userMentions[i].screen_name;
-//         if (candidateNumbers[screenName] !== undefined) {
-//           twitterStream(screenName, candidateNumbers[screenName], tweet)
-//         }
-//       }
-//     }
-//   });
-//
-//   stream.on('disconnect', function (disconnectMessage) {
-//     console.log(disconnectMessage);
-//   });
-//
-//   stream.on('error', function(error) {
-//     throw error;
-//   });
-// });
+twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
+  stream.on('data', function(tweet) {
+    if (tweet.entities !== undefined) {
+      var userMentions = tweet.entities.user_mentions;
+      for (var i=0; i<userMentions.length; i++) {
+        var screenName = userMentions[i].screen_name;
+        if (candidateNumbers[screenName] !== undefined) {
+          twitterStream(screenName, candidateNumbers[screenName], tweet)
+        }
+      }
+    }
+  });
+
+  stream.on('disconnect', function (disconnectMessage) {
+    console.log(disconnectMessage);
+  });
+
+  stream.on('error', function(error) {
+    throw error;
+  });
+});
 
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};
@@ -202,23 +202,17 @@ function updateCandidateArticles() {
               candidateArticles[key1].articles[articleIndex].html = html
               // debugger;
               console.log("worked")
-            } else {
-              //do add blank html content
-              // debugger;
-              // var html = '<h1>Preview unavailable</h1>'
-              // candidateArticles[key1].articles[articleIndex].html = html
-              // console.log("didn't work")
             }
           });
-          // hodClient.call('extractconcepts', data2, function(err2, resp2) {
-          //   var concepts = resp2.body.concepts;
-          //   async.each(concepts, function(concept, callback) {
-          //     var newDict = {"text": concept.concept, "size": concept.occurrences}
-          //     candidateArticles[key1].concepts.push(newDict);
-          //   }, function (err) {
-          //     if (err) console.error(err.message);
-          //   });
-          // });
+          hodClient.call('extractconcepts', data2, function(err2, resp2) {
+            var concepts = resp2.body.concepts;
+            async.each(concepts, function(concept, callback) {
+              var newDict = {"text": concept.concept, "size": concept.occurrences}
+              candidateArticles[key1].concepts.push(newDict);
+            }, function (err) {
+              if (err) console.error(err.message);
+            });
+          });
         }, function (err) {
           if (err) console.error(err.message);
         });
