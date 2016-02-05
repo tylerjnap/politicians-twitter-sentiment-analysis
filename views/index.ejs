@@ -449,28 +449,50 @@
     ga('send', 'pageview');
   </script>
   <script>
-  $(window).load(function() {
-    var arr = ["bernie", "hillary", "donald", "ted", "marco", "ben"];
-    for (var i=0; i<arr.length; i++) {
-      for (var j=0; j<6; j++) {
-        console.log('.'+arr[i]+'-'+j);
-        var myElem = document.getElementsByClassName(arr[i]+'-'+j);
-        if (myElem.length > 0) {
-          $('.'+arr[i]+'-'+j).colorbox({html:"<h1>"+j+"</h1>"});
-        }
-      }
-    }
-  });
+  // $(window).load(function() {
+  //   $.ajax({
+  //   url: "/candidatehtml",
+  //   type: 'GET',
+  //   success: function(res) {
+  //     console.log(res);
+  //     $.each(res, function(key, value) {
+  //       var candidateFirstName = key.split(" ")[0];
+  //       generateWordCloud(value.concepts, candidateFirstName);
+  //     });
+  //   }
+  //   });
+  //
+  //
+  //
+  //   var arr = ["bernie", "hillary", "donald", "ted", "marco", "ben"];
+  //   for (var i=0; i<arr.length; i++) {
+  //     for (var j=0; j<6; j++) {
+  //       console.log('.'+arr[i]+'-'+j);
+  //       var myElem = document.getElementsByClassName(arr[i]+'-'+j);
+  //       if (myElem.length > 0) {
+  //         $('.'+arr[i]+'-'+j).colorbox({html:"<h1>"+j+"</h1>"});
+  //       }
+  //     }
+  //   }
+  // });
   </script>
 </body>
 <script>
+$(window).load(function() {
     $.ajax({
     url: "/candidatehtml",
     type: 'GET',
     success: function(res) {
       console.log(res);
       $.each(res, function(key, value) {
-        var candidateFirstName = key.split(" ")[0];
+        var candidateFirstName = key.split(" ")[0].toLowerCase();
+        for (var j=0; j<6; j++) {
+          console.log('.'+candidateFirstName+'-'+j);
+          var myElem = document.getElementsByClassName(candidateFirstName+'-'+j);
+          if (myElem.length > 0 && value.articles[j].html) {
+            $('.'+candidateFirstName+'-'+j).colorbox({html: value.articles[j].html});
+          }
+        }
         generateWordCloud(value.concepts, candidateFirstName);
       });
     }
@@ -510,5 +532,6 @@
                   .text(function(d) { return d.text; });
       }
     }
+  });
 </script>
 </html>
