@@ -479,25 +479,34 @@
 </body>
 <script>
 $(window).load(function() {
-    $.ajax({
-    url: "/candidatehtml",
-    type: 'GET',
-    success: function(res) {
-      console.log(res);
-      $.each(res, function(key, value) {
-        var candidateFirstName = key.split(" ")[0].toLowerCase();
-        for (var j=0; j<6; j++) {
-          console.log('.'+candidateFirstName+'-'+j);
-          var myElem = document.getElementsByClassName(candidateFirstName+'-'+j);
-          if (myElem.length > 0 && value.articles[j].html) {
-            $('.'+candidateFirstName+'-'+j).colorbox({html: value.articles[j].html});
-          } else {
-            $('.'+candidateFirstName+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
+    function getCandidateArticles() {
+      $.ajax({
+      url: "/candidatehtml",
+      type: 'GET',
+      success: function(res) {
+        console.log(res);
+        $.each(res, function(key, value) {
+          var candidateFirstName = key.split(" ")[0].toLowerCase();
+          var numArticles = 6;
+          for (var j=0; j<numArticles; j++) {
+            console.log('.'+candidateFirstName+'-'+j);
+            var myElem = document.getElementsByClassName(candidateFirstName+'-'+j);
+            if (myElem.length > 0 && value.articles[j].html) {
+              $('.'+candidateFirstName+'-'+j).colorbox({html: value.articles[j].html});
+            } else {
+              $('.'+candidateFirstName+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
+            }
           }
-        }
-        generateWordCloud(value.concepts, candidateFirstName);
+          generateWordCloud(value.concepts, candidateFirstName);
+        });
+      }
       });
     }
+
+    getCandidateArticles();
+
+    $('.tabs').click(function() {
+      getCandidateArticles();
     });
 
     function generateWordCloud(frequency_list, candidate) {
