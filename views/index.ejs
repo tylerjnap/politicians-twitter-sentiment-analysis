@@ -491,6 +491,8 @@ $(window).load(function() {
           var myElem = document.getElementsByClassName(candidateFirstName+'-'+j);
           if (myElem.length > 0 && value.articles[j].html) {
             $('.'+candidateFirstName+'-'+j).colorbox({html: value.articles[j].html});
+          } else {
+            $('.'+candidateFirstName+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
           }
         }
         generateWordCloud(value.concepts, candidateFirstName);
