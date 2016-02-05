@@ -195,23 +195,33 @@ function updateCandidateArticles() {
           console.log(article)
           var data2 = {url: article.reference};
           hodClient.call('viewdocument', data2, function(err3, resp3) {
-            if (!err3 && !resp3.body.error) {
+            var articleIndex = candidateArticles[key1].articles.indexOf(article);
+            if (!err3 && !resp3.body.error && articleIndex >= 0) {
+              add real html content
               var html = resp3.body;
+              candidateArticles[key1].articles[articleIndex].html = html
+              debugger;
               article.html = html;
+              console.log("worked")
             } else {
+              //do add blank html content
+              debugger;
+              var html = '<h1>Preview unavailable</h1>'
+              candidateArticles[key1].articles[articleIndex].html = html
               console.log(resp3);
               console.log(err3);
+              console.log("didn't work")
             }
           });
-          hodClient.call('extractconcepts', data2, function(err2, resp2) {
-            var concepts = resp2.body.concepts;
-            async.each(concepts, function(concept, callback) {
-              var newDict = {"text": concept.concept, "size": concept.occurrences}
-              candidateArticles[key1].concepts.push(newDict);
-            }, function (err) {
-              if (err) console.error(err.message);
-            });
-          });
+          // hodClient.call('extractconcepts', data2, function(err2, resp2) {
+          //   var concepts = resp2.body.concepts;
+          //   async.each(concepts, function(concept, callback) {
+          //     var newDict = {"text": concept.concept, "size": concept.occurrences}
+          //     candidateArticles[key1].concepts.push(newDict);
+          //   }, function (err) {
+          //     if (err) console.error(err.message);
+          //   });
+          // });
         }, function (err) {
           if (err) console.error(err.message);
         });
