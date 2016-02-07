@@ -23,6 +23,10 @@
   .meter--bar.meter--vertical .meter__value {
     display: none;
   }
+  .candidate-image {
+    height: 250px;
+    width: auto;
+  }
   </style>
 </head>
 <body>
@@ -268,7 +272,7 @@
               <Grommet.Tab title="Bernie Sanders">
                 <Grommet.Box>
                   <Grommet.Header pad={{horizontal: 'small'}}>Bernie Sanders</Grommet.Header>
-                  <Grommet.Image src="img/bernie.jpg" size="small" full={false} />
+                  <img className="candidate-image" src="img/bernie.jpg" />
                   <Grommet.Article>
                     <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
                     <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
@@ -308,70 +312,136 @@
               </Grommet.Tab>
               <Grommet.Tab title="Hillary Clinton">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
-                    <Grommet.Header pad={{horizontal: 'small'}}>Hillary Clinton</Grommet.Header>
-                    <Grommet.Image src="img/hillary.jpg" size="small" full={false} />
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Hillary Clinton"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Hillary Clinton"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Hillary Clinton"].nNeutral, "colorIndex": "graph-3"}
+
+                  <Grommet.Header pad={{horizontal: 'small'}}>Hillary Clinton</Grommet.Header>
+                  <Grommet.Image src="img/hillary.jpg" size="small" full={false} />
+                  <Grommet.Article>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
+                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
+                        {"label": "Positive", "value": this.state["Hillary Clinton"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["Hillary Clinton"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["Hillary Clinton"].nNeutral, "colorIndex": "graph-3"}
+                      ]} />
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
+                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                          {"label": "Daily Average", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["Hillary Clinton"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Hillary Clinton"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                  </Grommet.Sidebar>
+                  </Grommet.Article>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
+                  <Grommet.Table>
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Preview</th>
+                          <th>Summary</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% for (var i=0; i<candidateArticles["Hillary Clinton"].articles.length; i++) { %>
+                      <Grommet.TableRow>
+                        <td><a href="<%= candidateArticles["Hillary Clinton"].articles[i].reference %>" target="_blank"><%= candidateArticles["Hillary Clinton"].articles[i].title %></a></td>
+                        <td className="hillary-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                        <td><%= candidateArticles["Hillary Clinton"].articles[i].summary %></td>
+                      </Grommet.TableRow>
+                      <% } %>
+                      </tbody>
+                    </Grommet.Table>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
+                  <div className="Hillary-wordcloud">
+                  </div>
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Donald Trump">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
-                    <Grommet.Header pad={{horizontal: 'small'}}>Donald Trump</Grommet.Header>
-                    <Grommet.Image src="img/donald.jpg" size="small" full={false} />
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Donald Trump"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Donald Trump"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Donald Trump"].nNeutral, "colorIndex": "graph-3"}
+
+                  <Grommet.Header pad={{horizontal: 'small'}}>Donald Trump</Grommet.Header>
+                  <Grommet.Image src="img/donald.jpg" size="small" full={false} />
+                  <Grommet.Article>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
+                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
+                        {"label": "Positive", "value": this.state["Donald Trump"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["Donald Trump"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["Donald Trump"].nNeutral, "colorIndex": "graph-3"}
+                      ]} />
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
+                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                          {"label": "Daily Average", "value": this.state["Donald Trump"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["Donald Trump"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Donald Trump"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Donald Trump"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                  </Grommet.Sidebar>
+                  </Grommet.Article>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
+                  <Grommet.Table>
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Preview</th>
+                          <th>Summary</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% for (var i=0; i<candidateArticles["Donald Trump"].articles.length; i++) { %>
+                      <Grommet.TableRow>
+                        <td><a href="<%= candidateArticles["Donald Trump"].articles[i].reference %>" target="_blank"><%= candidateArticles["Donald Trump"].articles[i].title %></a></td>
+                        <td className="donald-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                        <td><%= candidateArticles["Donald Trump"].articles[i].summary %></td>
+                      </Grommet.TableRow>
+                      <% } %>
+                      </tbody>
+                    </Grommet.Table>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
+                  <div className="Donald-wordcloud">
+                  </div>
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Ted Cruz">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
-                    <Grommet.Header pad={{horizontal: 'small'}}>Ted Cruz</Grommet.Header>
-                    <Grommet.Image src="img/ted.jpg" size="small" full={false} />
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Ted Cruz"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Ted Cruz"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Ted Cruz"].nNeutral, "colorIndex": "graph-3"}
+
+                  <Grommet.Header pad={{horizontal: 'small'}}>Ted Cruz</Grommet.Header>
+                  <Grommet.Image src="img/ted.jpg" size="small" full={false} />
+                  <Grommet.Article>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
+                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
+                        {"label": "Positive", "value": this.state["Ted Cruz"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["Ted Cruz"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["Ted Cruz"].nNeutral, "colorIndex": "graph-3"}
+                      ]} />
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
+                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                          {"label": "Daily Average", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["Ted Cruz"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Ted Cruz"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                  </Grommet.Sidebar>
+                  </Grommet.Article>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
+                  <Grommet.Table>
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Preview</th>
+                          <th>Summary</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% for (var i=0; i<candidateArticles["Ted Cruz"].articles.length; i++) { %>
+                      <Grommet.TableRow>
+                        <td><a href="<%= candidateArticles["Ted Cruz"].articles[i].reference %>" target="_blank"><%= candidateArticles["Ted Cruz"].articles[i].title %></a></td>
+                        <td className="ted-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                        <td><%= candidateArticles["Ted Cruz"].articles[i].summary %></td>
+                      </Grommet.TableRow>
+                      <% } %>
+                      </tbody>
+                    </Grommet.Table>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
+                  <div className="Ted-wordcloud">
+                  </div>
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Marco Rubio">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
+
                     <Grommet.Header pad={{horizontal: 'small'}}>Marco Rubio</Grommet.Header>
                     <Grommet.Image src="img/marco.jpg" size="small" full={false} />
                     <Grommet.Article>
@@ -387,34 +457,78 @@
                             {"label": "Instantaneous", "value": this.state["Marco Rubio"].averageWindow1, "colorIndex": "graph-2"},
                           ]} />
                     </Grommet.Article>
-                  </Grommet.Sidebar>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
+                    <Grommet.Table>
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Preview</th>
+                            <th>Summary</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <% for (var i=0; i<candidateArticles["Marco Rubio"].articles.length; i++) { %>
+                        <Grommet.TableRow>
+                          <td><a href="<%= candidateArticles["Marco Rubio"].articles[i].reference %>" target="_blank"><%= candidateArticles["Marco Rubio"].articles[i].title %></a></td>
+                          <td className="marco-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                          <td><%= candidateArticles["Marco Rubio"].articles[i].summary %></td>
+                        </Grommet.TableRow>
+                        <% } %>
+                        </tbody>
+                      </Grommet.Table>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
+                    <div className="Marco-wordcloud">
+                    </div>
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Ben Carson">
                 <Grommet.Box>
-                  <Grommet.Sidebar colorIndex="light-1">
-                    <Grommet.Header pad={{horizontal: 'small'}}>Ben Carson</Grommet.Header>
-                    <Grommet.Image src="img/ben.jpg" size="small" full={false} />
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Ben Carson"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Ben Carson"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Ben Carson"].nNeutral, "colorIndex": "graph-3"}
+
+                  <Grommet.Header pad={{horizontal: 'small'}}>Ben Carson</Grommet.Header>
+                  <Grommet.Image src="img/ben.jpg" size="small" full={false} />
+                  <Grommet.Article>
+                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets</Grommet.Header>
+                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
+                        {"label": "Positive", "value": this.state["Ben Carson"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["Ben Carson"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["Ben Carson"].nNeutral, "colorIndex": "graph-3"}
+                      ]} />
+                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
+                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
+                          {"label": "Daily Average", "value": this.state["Ben Carson"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["Ben Carson"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Ben Carson"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Ben Carson"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                  </Grommet.Sidebar>
+                  </Grommet.Article>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
+                  <Grommet.Table>
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Preview</th>
+                          <th>Summary</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% for (var i=0; i<candidateArticles["Ben Carson"].articles.length; i++) { %>
+                      <Grommet.TableRow>
+                        <td><a href="<%= candidateArticles["Ben Carson"].articles[i].reference %>" target="_blank"><%= candidateArticles["Ben Carson"].articles[i].title %></a></td>
+                        <td className="ben-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
+                        <td><%= candidateArticles["Ben Carson"].articles[i].summary %></td>
+                      </Grommet.TableRow>
+                      <% } %>
+                      </tbody>
+                    </Grommet.Table>
+                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
+                  <div className="Ben-wordcloud">
+                  </div>
+
                 </Grommet.Box>
               </Grommet.Tab>
             </Grommet.Tabs>
           </Grommet.Split>
           <Grommet.Footer>
-            <p>Sentiment analysis powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_hod.png" height="50px" /></a></p>
+            <p>Sentiment analysis and content powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_hod.png" height="50px" /></a></p>
           </Grommet.Footer>
         </div>
       );
@@ -491,9 +605,9 @@ $(window).load(function() {
             console.log('.'+candidateFirstNameLowerCase+'-'+j);
             var myElem = document.getElementsByClassName(candidateFirstNameLowerCase+'-'+j);
             if (myElem.length > 0 && value.articles[j].html) {
-              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: value.articles[j].html});
+              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: value.articles[j].html,height: '70%', width: '68%'});
             } else {
-              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>', height: '20%', width: '60%'});
+              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
             }
           }
           generateWordCloud(value.concepts, candidateFirstName);
