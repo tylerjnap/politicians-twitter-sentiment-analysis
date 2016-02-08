@@ -321,9 +321,8 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                  <div className="Bernie-wordcloud">
-                  </div>
+
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Hillary Clinton">
@@ -369,9 +368,8 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                  <div className="Hillary-wordcloud">
-                  </div>
+
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Donald Trump">
@@ -417,9 +415,8 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                  <div className="Donald-wordcloud">
-                  </div>
+
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Ted Cruz">
@@ -465,9 +462,8 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                  <div className="Ted-wordcloud">
-                  </div>
+
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Marco Rubio">
@@ -513,9 +509,8 @@
                         <% } %>
                         </tbody>
                       </Grommet.Table>
-                    <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                    <div className="Marco-wordcloud">
-                    </div>
+
+
                 </Grommet.Box>
               </Grommet.Tab>
               <Grommet.Tab title="Ben Carson">
@@ -561,9 +556,8 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Main concepts in above articles</Grommet.Header>
-                  <div className="Ben-wordcloud">
-                  </div>
+
+
 
                 </Grommet.Box>
               </Grommet.Tab>
@@ -656,7 +650,7 @@ $(window).load(function() {
               $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
             }
           }
-          generateWordCloud(value.concepts, candidateFirstName);
+          // generateWordCloud(value.concepts, candidateFirstName);
         });
       }
       });
