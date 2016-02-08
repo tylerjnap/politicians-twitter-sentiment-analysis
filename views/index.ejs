@@ -27,6 +27,9 @@
     height: 250px;
     width: auto;
   }
+  #cboxClose {
+    background-color: #8c50ff;
+  }
   </style>
 </head>
 <body>
@@ -238,6 +241,7 @@
     render: function () {
       return (
         <div className="messages">
+          <Grommet.Header pad={{horizontal: 'medium'}}>What is this dashboard? &nbsp; <Grommet.Icons.Base.Overview large={false} colorIndex="brand" className="whats-this" /></Grommet.Header>
           <Grommet.Split>
             <Grommet.Article size="small">
               <Grommet.Header pad={{horizontal: 'medium'}}>Daily Current Average Public Sentiment from 0 to 100</Grommet.Header>
@@ -658,6 +662,9 @@ $(window).load(function() {
                   .text(function(d) { return d.text; });
       }
     }
+
+    $('.whats-this').colorbox({href:"./whats_this", opacity: "1"});
+
   });
 </script>
 </html>

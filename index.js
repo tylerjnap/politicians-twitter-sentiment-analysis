@@ -112,6 +112,10 @@ app.get("/candidatehtml", function(req, res) {
   res.status(200).send(payload)
 })
 
+app.get("/whats_this", function(req, res) {
+  res.status(200).sendfile('views/whats_this.html')
+})
+
 http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
@@ -171,7 +175,7 @@ function twitterStream(candidate, candidateData, tweetObject) {
         io.emit('message', tweetData);
       }
     } else {
-      if (resp.body.error) {console.log(resp.body.error);}
+      // if (resp.body.error) {console.log(resp.body.error);}
       console.log("------------------");
       console.log(err);
     }
@@ -180,7 +184,7 @@ function twitterStream(candidate, candidateData, tweetObject) {
 
 // functions for updating articles
 updateCandidateArticles();
-setInterval(updateCandidateArticles(), articleUpdateInterval);
+// setInterval(updateCandidateArticles(), articleUpdateInterval);
 
 function updateCandidateArticles() {
   async.forEachOf(candidateArticles, function (value1, key1, callback1) {
