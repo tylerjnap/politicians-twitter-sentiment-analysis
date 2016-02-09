@@ -17,6 +17,12 @@
   <script src="js/grommet.min.js"></script>
   <script src="js/colorbox/jquery.colorbox-min.js"></script>
   <style>
+  body {
+    /*background-color: #1AA982;*/
+  }
+  .messages {
+    background-color: white;
+  }
   .meter--bar:not(.meter--vertical) .meter__value {
     display: none;
   }
@@ -32,8 +38,25 @@
   #cboxClose {
     background-color: #8c50ff;
   }
+  .messages, #colorbox {
+    border: 2px #1AA982;
+    border-radius: 2px;
+    /*margin: 10px;*/
+    box-shadow: 0 0 2px #1AA982;
+  }
+  .left-side {
+    /*border-right: solid 2px #8c50ff;*/
+  }
   .footer {
-    /*background-color: #F5F5F5;*/
+    border-top: solid 2px #8c50ff;
+  }
+  #top {
+    background-color: #1AA982;
+    border-bottom: solid 2px #8c50ff;
+  }
+  section:not(.section) {
+    /*padding-top: 24px;*/
+     padding-bottom: 0px;
   }
   </style>
 </head>
@@ -246,9 +269,14 @@
     render: function () {
       return (
         <div className="messages">
-          <Grommet.Header pad={{horizontal: 'medium'}}>What is this dashboard? &nbsp; <Grommet.Icons.Base.Help large={false} colorIndex="brand" className="whats-this" /></Grommet.Header>
+          <section id="top">
+            <Grommet.Header pad={{horizontal: 'medium'}} size={'small'}>
+              Our feelings about politicians &nbsp; <Grommet.Icons.Base.Navigate large={false} colorIndex="brand" className="whats-this" />
+            </Grommet.Header>
+          </section>
+
           <Grommet.Split>
-            <Grommet.Article size="small">
+            <Grommet.Article size="small" className="left-side">
               <Grommet.Header pad={{horizontal: 'medium'}}>Daily Current Average Public Sentiment from 0 to 100</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
                   {"label": "Sanders", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
@@ -563,12 +591,13 @@
               </Grommet.Tab>
             </Grommet.Tabs>
           </Grommet.Split>
-          <hr />
+
           <div className="footer">
-            <p>Sentiment analysis and content search powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_hod.png" height="50px" /></a></p>
-            <p>Created by Tyler Nappy &nbsp;<a href="https://twitter.com/tylernappy" target="_blank"><Grommet.Icons.Base.SocialTwitter large={false} colorIndex="brand" /></a></p>
+            <p>Brought to you by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_hod.png" height="40px" /></a></p>
+            <p>Analysis powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hod-black.png" height="25px" /></a></p>
             <p>Styled using Grommet &nbsp;<a href="http://grommet.io/docs/" target="_blank"><Grommet.Icons.Base.Link large={false} colorIndex="brand" /></a></p>
             <p>Source code &nbsp;<a href="https://github.com/tylernappy/politicians-twitter-sentiment-analysis" target="_blank"><Grommet.Icons.Base.SocialGithub large={false} colorIndex="brand" /></a></p>
+            <p>Created by Tyler Nappy &nbsp;<a href="https://twitter.com/tylernappy" target="_blank"><Grommet.Icons.Base.SocialTwitter large={false} colorIndex="brand" /></a></p>
           </div>
         </div>
       );
@@ -645,7 +674,7 @@ $(window).load(function() {
             console.log('.'+candidateFirstNameLowerCase+'-'+j);
             var myElem = document.getElementsByClassName(candidateFirstNameLowerCase+'-'+j);
             if (myElem.length > 0 && value.articles[j].html) {
-              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: value.articles[j].html,height: '70%', width: '68%'});
+              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: value.articles[j].html, height: '70%', width: '68%'});
             } else {
               $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
             }
@@ -699,7 +728,7 @@ $(window).load(function() {
       }
     }
 
-    $('.whats-this').colorbox({href:"./whats_this", opacity: "1"});
+    $('.whats-this').colorbox({href:"./whats_this", opacity: "1",  height: '90%', width: '40%'});
 
   });
 </script>

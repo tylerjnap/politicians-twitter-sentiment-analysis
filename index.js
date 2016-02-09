@@ -113,34 +113,34 @@ app.get("/candidatehtml", function(req, res) {
 })
 
 app.get("/whats_this", function(req, res) {
-  res.status(200).sendfile('views/whats_this.html')
+  res.status(200).sendFile(path.join(__dirname, 'views', 'whats_this.html'))
 })
 
 http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
 
-twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
-  stream.on('data', function(tweet) {
-    if (tweet.entities !== undefined) {
-      var userMentions = tweet.entities.user_mentions;
-      for (var i=0; i<userMentions.length; i++) {
-        var screenName = userMentions[i].screen_name;
-        if (candidateNumbers[screenName] !== undefined) {
-          twitterStream(screenName, candidateNumbers[screenName], tweet)
-        }
-      }
-    }
-  });
-
-  stream.on('disconnect', function (disconnectMessage) {
-    console.log(disconnectMessage);
-  });
-
-  stream.on('error', function(error) {
-    throw error;
-  });
-});
+// twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
+//   stream.on('data', function(tweet) {
+//     if (tweet.entities !== undefined) {
+//       var userMentions = tweet.entities.user_mentions;
+//       for (var i=0; i<userMentions.length; i++) {
+//         var screenName = userMentions[i].screen_name;
+//         if (candidateNumbers[screenName] !== undefined) {
+//           twitterStream(screenName, candidateNumbers[screenName], tweet)
+//         }
+//       }
+//     }
+//   });
+//
+//   stream.on('disconnect', function (disconnectMessage) {
+//     console.log(disconnectMessage);
+//   });
+//
+//   stream.on('error', function(error) {
+//     throw error;
+//   });
+// });
 
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};
@@ -151,7 +151,9 @@ function twitterStream(candidate, candidateData, tweetObject) {
         candidateData.n += 1; //increase n by one
         candidateData.nWindow1 +=1 ; //increase by one
         var sentiment = resp.body.aggregate.sentiment;
-        var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50.0; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
+        // var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50.0; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
+        // var score = 50.0*(resp.body.aggregate.score)+50.0; //map from -1.0 to 1.0 to 0 to 100 ... y =50*x+50
+        var score = 100.0*(resp.body.aggregate.score)+50.0; //map from -1.0 to 1.0 to 0 to 100 ... y =50*x+50
         if (score > 50) {
           candidateData.nPositive += 1;
         } else if(score < 50) {
