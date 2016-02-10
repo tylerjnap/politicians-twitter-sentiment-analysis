@@ -679,7 +679,7 @@ $(window).load(function() {
             if (myElem.length > 0 && value.articles[j].html) {
               $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: value.articles[j].html, height: '70%', width: '68%'});
             } else {
-              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<h1>Preview unavailable</h1>'});
+              $('.'+candidateFirstNameLowerCase+'-'+j).colorbox({html: '<style>#colorbox{background-color: white;}</style><h1>Preview unavailable</h1>'});
             }
           }
           // generateWordCloud(value.concepts, candidateFirstName);
