@@ -8,6 +8,7 @@ var io = require('socket.io')(http);
 var Twitter = require('twitter');
 var havenondemand = require('havenondemand');
 var async = require("async");
+var RateLimiter = require('limiter').RateLimiter;
 
 var hodClient = new havenondemand.HODClient(process.env.hpe_apikey);
 
@@ -19,6 +20,8 @@ var twitterClient = new Twitter({
 });
 
 port = process.env.PORT || 5000;
+var limiter = new RateLimiter(4, 'second') //first parameter is max number of calls per second
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -144,43 +147,46 @@ twitterClient.stream('statuses/filter', {track: candidateString}, function(strea
 
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};
-  hodClient.call('analyzesentiment', data, function(err, resp){
-    // debugger;
-    if (!err && !resp.body.error) {
-      if (resp.body.aggregate !== undefined) {
-        candidateData.n += 1; //increase n by one
-        candidateData.nWindow1 +=1 ; //increase by one
-        var sentiment = resp.body.aggregate.sentiment;
-        // var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50.0; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
-        // var score = 50.0*(resp.body.aggregate.score)+50.0; //map from -1.0 to 1.0 to 0 to 100 ... y =50*x+50
-        var score = 100.0*(resp.body.aggregate.score)+50.0; //map from -0.5 to 0.5 to 0 to 100 ... y =50*x+50
-        if (score > 50) {
-          candidateData.nPositive += 1;
-        } else if(score < 50) {
-          candidateData.nNegative += 1;
-        } else {
-          candidateData.nNeutral += 1;
+  limiter.removeTokens(1, function(err, remainingRequests) {
+    console.log("Remaining requests per second: " + remainingRequests);
+    hodClient.call('analyzesentiment', data, function(err, resp){
+      // debugger;
+      if (!err && !resp.body.error) {
+        if (resp.body.aggregate !== undefined) {
+          candidateData.n += 1; //increase n by one
+          candidateData.nWindow1 +=1 ; //increase by one
+          var sentiment = resp.body.aggregate.sentiment;
+          // var score = 10.0/3.0*(resp.body.aggregate.score*100.0)+50.0; //map from -15 to 15 to 0 to 100 ... y =10/3*x+50
+          // var score = 50.0*(resp.body.aggregate.score)+50.0; //map from -1.0 to 1.0 to 0 to 100 ... y =50*x+50
+          var score = 100.0*(resp.body.aggregate.score)+50.0; //map from -0.5 to 0.5 to 0 to 100 ... y =50*x+50
+          if (score > 50) {
+            candidateData.nPositive += 1;
+          } else if(score < 50) {
+            candidateData.nNegative += 1;
+          } else {
+            candidateData.nNeutral += 1;
+          }
+          //perform running averages window
+          candidateData.runningAverageWindow1Array.push(score);
+          if (candidateData.runningAverageWindow1Array.length > window1) { //if there is enough data points in the window
+            candidateData.runningAverageWindow1Array.splice(0,1);
+            candidateData.runningAverageWindow1 = calculateRunningAverageWindow(candidateData.runningAverageWindow1Array, window1)
+          }
+          //
+          candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
+          rgbInstantaneous = mapColor(score);
+          rgbAverage = mapColor(candidateData.averages.newAvg);
+          console.log("------------------------------");
+          console.log(tweetObject.text + " | " + sentiment + " | " + score);
+          var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
+          io.emit('message', tweetData);
         }
-        //perform running averages window
-        candidateData.runningAverageWindow1Array.push(score);
-        if (candidateData.runningAverageWindow1Array.length > window1) { //if there is enough data points in the window
-          candidateData.runningAverageWindow1Array.splice(0,1);
-          candidateData.runningAverageWindow1 = calculateRunningAverageWindow(candidateData.runningAverageWindow1Array, window1)
-        }
-        //
-        candidateData.averages = calculateRunningAverage(score, candidateData.n, candidateData.averages);
-        rgbInstantaneous = mapColor(score);
-        rgbAverage = mapColor(candidateData.averages.newAvg);
-        console.log("------------------------------");
-        console.log(tweetObject.text + " | " + sentiment + " | " + score);
-        var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
-        io.emit('message', tweetData);
+      } else {
+        // if (resp.body.error) {console.log(resp.body.error);}
+        console.log("------------------");
+        console.log(err);
       }
-    } else {
-      // if (resp.body.error) {console.log(resp.body.error);}
-      console.log("------------------");
-      console.log(err);
-    }
+    });
   });
 }
 

@@ -14,6 +14,7 @@
     "ejs": "^2.3.4",
     "express": "^4.13.3",
     "havenondemand": "^1.1.0",
+    "limiter": "^1.1.0",
     "socket.io": "^1.3.7",
     "twitter": "^1.2.5"
   }
