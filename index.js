@@ -20,7 +20,7 @@ var twitterClient = new Twitter({
 });
 
 port = process.env.PORT || 5000;
-var limiter = new RateLimiter(4, 'second') //first parameter is max number of calls per second
+var limiter = new RateLimiter(2, 'second') //first parameter is max number of calls per second
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
