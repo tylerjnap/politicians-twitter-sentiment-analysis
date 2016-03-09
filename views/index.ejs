@@ -4,7 +4,7 @@
 <script src="js/d3.layout.cloud.js"></script>
 <head>
   <meta charset="UTF-8">
-  <title>Politician Sentiment Analysis</title>
+  <title>Our Feelings About Politicians</title>
   <link rel="shortcut icon" href="/img/favicon.ico" />
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400italic,400,700' rel='stylesheet' type='text/css'>
   <!-- <link href='http://grommet.io/assets/latest/css/grommet.min.css' rel='stylesheet' type='text/css'> -->
@@ -19,9 +19,18 @@
   <style>
   body {
     /*background-color: #1AA982;*/
+    color: white;
+    background-color: #282828;
+  }
+  .tab__label, .legend__item-label, .legend__item-value, .meter__minmax-min, .meter__minmax-max {
+    color: white;
+  }
+  .tab--active .tab__label {
+    color: #8c50ff;
   }
   .messages {
     background-color: white;
+    background-color: #282828;
   }
   .meter--bar:not(.meter--vertical) .meter__value {
     display: none;
@@ -53,8 +62,9 @@
   #top {
     /*background-color: #1AA982;*/
     color: white;
-    background-color: #425563;
-
+    /*background-color: #425563;*/
+    background-color: #66D9EF;
+    background-color: #8c50ff;
     border-bottom: solid 2px #8c50ff;
   }
   section:not(.section) {
@@ -274,7 +284,7 @@
         <div className="messages">
           <section id="top">
             <Grommet.Header pad={{horizontal: 'medium'}} size={'small'}>
-              Our feelings about politicians &nbsp; <Grommet.Icons.Base.Navigate large={false} colorIndex="brand" className="whats-this" />
+              Our Feelings About Politicians &nbsp; <Grommet.Icons.Base.Navigate large={false} colorIndex="brand" className="whats-this" />
             </Grommet.Header>
           </section>
 
@@ -596,8 +606,8 @@
           </Grommet.Split>
 
           <div className="footer">
-            <p>Brought to you by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_hod.png" height="40px" /></a></p>
-            <p>Analysis powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hod-black.png" height="25px" /></a></p>
+            <p>Brought to you by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hpe_white.png" height="40px" /></a></p>
+            <p>Analysis powered by &nbsp; <a href="https://havenondemand.com" target="_blank"><img src="img/hod-white.png" height="25px" /></a></p>
             <p>Styled using Grommet &nbsp;<a href="http://grommet.io/docs/" target="_blank"><Grommet.Icons.Base.Link large={false} colorIndex="brand" /></a></p>
             <p>Source code &nbsp;<a href="https://github.com/tylernappy/politicians-twitter-sentiment-analysis" target="_blank"><Grommet.Icons.Base.SocialGithub large={false} colorIndex="brand" /></a></p>
             <p>Created by Tyler Nappy &nbsp;<a href="https://twitter.com/tylernappy" target="_blank"><Grommet.Icons.Base.SocialTwitter large={false} colorIndex="brand" /></a></p>
