@@ -180,6 +180,25 @@ function twitterStream(candidate, candidateData, tweetObject) {
           console.log(tweetObject.text + " | " + sentiment + " | " + score);
           var tweetData = {candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive};
           io.emit('message', tweetData);
+          var data2 = {
+            index: 'ourfeelingsaboutpoliticiansa',
+            json: JSON.stringify({
+              document: [{
+                title: candidate + candidateData.n,
+                content: tweetObject.text,
+                candidate: candidate, tweet: tweetObject, positive: resp.body.positive, negative: resp.body.negative, aggregate: resp.body.aggregate, rgbInstantaneous: rgbInstantaneous, rgbAverage: rgbAverage, average: candidateData.averages.newAvg, averageWindow1: candidateData.runningAverageWindow1, n: candidateData.n, nNeutral: candidateData.nNeutral, nNegative: candidateData.nNegative, nPositive: candidateData.nPositive,
+                score: score,
+                date: Date.now()
+              }]
+            })
+          }
+          hodClient.call('addtotextindex', data2, function(err2, resp2, body2) {
+            if (resp2) {
+              if (resp2.body) {
+                console.log(resp2.body)
+              }
+            }
+          })
         }
       } else {
         // if (resp.body.error) {console.log(resp.body.error);}
