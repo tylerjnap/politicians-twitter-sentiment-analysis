@@ -119,6 +119,11 @@ app.get("/whats_this", function(req, res) {
   res.status(200).sendFile(path.join(__dirname, 'views', 'whats_this.html'))
 })
 
+app.get('/candidatedata', function(req, res) {
+  var payload = candidateNumbers
+  res.status(200).send(payload)
+})
+
 http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
