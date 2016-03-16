@@ -18,10 +18,7 @@
   <script src="js/colorbox/jquery.colorbox-min.js"></script>
   <style>
   body {
-    /*background-color: #1AA982;*/
     color: white;
-    /*background-color: #282828;*/
-    /*background-color: #5f7a76;*/
     background-color: #000000;
   }
   .tab__label, .legend__item-label, .legend__item-value, .meter__minmax-min, .meter__minmax-max {
@@ -32,10 +29,6 @@
   }
   .messages {
     background-color: white;
-    /*background-color: #282828;*/
-    /*background-color: #5f7a76;*/
-    /*background-color: #c6c9ca;*/
-    /*background-color: #000000;*/
     background-color: #425563;
 
   }
@@ -46,8 +39,6 @@
     display: none;
   }
   .candidate-image {
-    /*height: 557px;
-    width: 440px;*/
     height: 300px;
     width: 237px;
   }
@@ -57,54 +48,41 @@
   .messages, #colorbox {
     border: 2px #1AA982;
     border-radius: 2px;
-    /*margin: 10px;*/
     box-shadow: 0 0 2px #614767;
   }
   .left-side {
-    /*border-right: solid 2px #8c50ff;*/
+
   }
   .footer {
     border-top: solid 2px #ff8d6d;
   }
   #top {
-    /*background-color: #1AA982;*/
     color: white;
-    /*background-color: #425563;*/
-    /*background-color: #66D9EF;*/
-    /*background-color: #8c50ff;*/
-    /*background-color: #2adcc9;*/
     background-color: #01a982;
     border-bottom: solid 2px #614767;
   }
   section:not(.section) {
-    /*padding-top: 24px;*/
      padding-bottom: 0px;
   }
   /*Bernie Sanders*/
   .meter--bar .meter__values .meter__slice.color-index-graph-1{
-    /*stroke: blue;*/
     stroke: #01a982;
   }
   .legend__item svg.legend__item-swatch.color-index-graph-1{
-    /*stroke: blue;*/
     stroke: #01a982;
   }
   /*Hillary Clinton*/
   .meter--bar .meter__values .meter__slice.color-index-graph-2{
-    /*stroke: red;*/
     stroke: white;
   }
   .legend__item svg.legend__item-swatch.color-index-graph-2{
-    /*stroke: red;*/
     stroke: white;
   }
   /*Donald Trump*/
   .meter--bar .meter__values .meter__slice.color-index-graph-3 {
-    /*stroke: white;*/
     stroke: #ff8d6d;
   }
   .legend__item svg.legend__item-swatch.color-index-graph-3 {
-    /*stroke: white;*/
     stroke: #ff8d6d;
   }
   /*Ted Cruz*/
@@ -132,7 +110,6 @@
   .control-icon.color-index-brand {
     fill: #ff8d6d;
   }
-
   .control-icon.color-index-brand {
       stroke: #ff8d6d;
   }
@@ -142,21 +119,16 @@
   .anchor, .anchor:visited, a, a:visited {
       color: #ff8d6d;
   }
-
   /*For line under names*/
   .tab--active .tab__label {
     border-bottom: 4px solid #2ad2c9;
   }
-
   #cboxContent {
     color: black;
   }
-
-
   </style>
 </head>
 <body>
-  <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
   <script src="/socket.io/socket.io.js"></script>
   <div id="content"></div>
   <script type="text/babel">
@@ -644,34 +616,6 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-68842515-1', 'auto');
     ga('send', 'pageview');
-  </script>
-  <script>
-  // $(window).load(function() {
-  //   $.ajax({
-  //   url: "/candidatehtml",
-  //   type: 'GET',
-  //   success: function(res) {
-  //     console.log(res);
-  //     $.each(res, function(key, value) {
-  //       var candidateFirstName = key.split(" ")[0];
-  //       generateWordCloud(value.concepts, candidateFirstName);
-  //     });
-  //   }
-  //   });
-  //
-  //
-  //
-  //   var arr = ["bernie", "hillary", "donald", "ted", "marco", "ben"];
-  //   for (var i=0; i<arr.length; i++) {
-  //     for (var j=0; j<6; j++) {
-  //       console.log('.'+arr[i]+'-'+j);
-  //       var myElem = document.getElementsByClassName(arr[i]+'-'+j);
-  //       if (myElem.length > 0) {
-  //         $('.'+arr[i]+'-'+j).colorbox({html:"<h1>"+j+"</h1>"});
-  //       }
-  //     }
-  //   }
-  // });
   </script>
 </body>
 <script>
