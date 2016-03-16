@@ -29,6 +29,8 @@ app.set('view engine', 'ejs');
 var candidateString = "SenSanders,HillaryClinton,realDonaldTrump,tedcruz,marcorubio,RealBenCarson"
 var window1 = 10;
 
+// Data used to store and calculate sentiment for candidates
+// Each key is the candidate's Twitter handle which is checked after a Tweet is streamed in so we know which candidate we're talking about
 var candidateNumbers = {
   "SenSanders": {
     averages: {newAvg: 0, oldAvg: 0},
@@ -84,6 +86,7 @@ var candidateNumbers = {
 
 var articleUpdateInterval = 60000*15; //15 minutes
 
+// Object which stores the articles and concepts from these articles for each of the candidates
 var candidateArticles = {
   "Bernie Sanders": {articles: [], concepts: []},
   "Hillary Clinton": {articles: [], concepts: []},
@@ -99,15 +102,18 @@ app.get("/", function(req, res) {
   });
 });
 
+// Route for HTML of candidate articles
 app.get("/candidatehtml", function(req, res) {
   var payload = candidateArticles
   res.status(200).send(payload)
 })
 
+// Route for the app explanation at the top
 app.get("/whats_this", function(req, res) {
   res.status(200).sendFile(path.join(__dirname, 'views', 'whats_this.html'))
 })
 
+// Route for third party developers to hit if they want the candidate sentiment data
 app.get('/candidatedata', function(req, res) {
   var payload = candidateNumbers
   res.status(200).send(payload)
@@ -117,6 +123,7 @@ http.listen(port, function(){
   console.log("Listening on port: "+port);
 });
 
+//Stream Tweets
 twitterClient.stream('statuses/filter', {track: candidateString}, function(stream) {
   stream.on('data', function(tweet) {
     if (tweet.entities !== undefined) {
@@ -139,6 +146,9 @@ twitterClient.stream('statuses/filter', {track: candidateString}, function(strea
   });
 });
 
+//Helper function to process a tweet for a particular candidate
+// Accepts the candidate Twitter handle, an object of his or her sentiment data, and the tweet object returned from the Twitter Stream API
+//Analyzes the sentiment, computes the average, computes the Instantaneous average (averageWindow1), maps to colors (no longer using in front end), emits all to the client through websockets and stores it in a Haven OnDemand Index
 function twitterStream(candidate, candidateData, tweetObject) {
   var data = {text: tweetObject.text};
   limiter.removeTokens(1, function(err, remainingRequests) {
@@ -203,10 +213,11 @@ function twitterStream(candidate, candidateData, tweetObject) {
   });
 }
 
-// functions for updating articles
+// Functions for updating articles
 updateCandidateArticles();
 // setInterval(updateCandidateArticles(), articleUpdateInterval);
 
+// Function to retrieve articles about each candidate. Results are stored in the object, candidateArticles, created at the top of this document
 function updateCandidateArticles() {
   async.forEachOf(candidateArticles, function (value1, key1, callback1) {
     candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
@@ -252,8 +263,10 @@ function updateCandidateArticles() {
   });
 }
 
-setInterval(function(){debugger;}, 6000);
+// setInterval(function(){debugger;}, 6000);
 
+// Function for mapping the color of the sentiment (no longer usingin front-end)
+// Accepts the sentiment score
 function mapColor(score) {
   weight = Math.floor(((0.5*score + 0.5)*100));
   r = Math.floor( (255 * (100 - weight)) / 100 );
@@ -262,12 +275,16 @@ function mapColor(score) {
   return {r: r, g: g, b:b};
 }
 
+// Function for finding the daily average sentiment
+// Accepts the new score, the number of total tweets, and the an object of the previous average and the new average
 function calculateRunningAverage(score, n, averages) {
   averages.newAvg = averages.oldAvg * (n-1)/n + score/n;   // New average = old average * (n-1)/n + new value /n
   averages.oldAvg = averages.newAvg; //set equal to new average for next go around of calling this function
   return averages;
 }
 
+// Function for calculating the instantaneous average sentiment
+// Accepts the array of sentiments and the window used for calculate (i.e. look at most recent 10 tweets)
 function calculateRunningAverageWindow(array, win) {
   var runsum = 0.0;
   for (var i=0; i<win; i++) {
