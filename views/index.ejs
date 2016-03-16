@@ -114,14 +114,14 @@
   .legend__item svg.legend__item-swatch.color-index-graph-4 {
     stroke: #2ad2c9;
   }
-  /*Marco Rubio*/
+  /*John Kasich*/
   .meter--bar .meter__values .meter__slice.color-index-graph-5 {
     stroke: #c6c9ca;
   }
   .legend__item svg.legend__item-swatch.color-index-graph-5 {
     stroke: #c6c9ca;
   }
-  /*Ben Carson*/
+  /*Ben Carson (no longer in use)*/
   .meter--bar .meter__values .meter__slice.color-index-graph-6 {
     stroke: #614767;
   }
@@ -222,21 +222,7 @@
           nNegative: 0,
           nPositive: 0
         },
-        "Marco Rubio": {
-          tweet: "",
-          positive: {},
-          negative: {},
-          aggregate: {},
-          rgbInstantaneous: {},
-          rgbAverage: {},
-          average: 0.0,
-          averageWindow1: 0.0,
-          n: 0,
-          nNeutral: 0,
-          nNegative: 0,
-          nPositive: 0
-        },
-        "Ben Carson": {
+        "John Kasich": {
           tweet: "",
           positive: {},
           negative: {},
@@ -320,24 +306,8 @@
           nPositive: msg.nPositive
           }
         });
-      } else if (msg.candidate === "marcorubio") {
-        this.setState({"Marco Rubio": {
-          tweet: msg.tweet,
-          positive: msg.positive,
-          negative: msg.negative,
-          aggregate: msg.aggregate,
-          rgbInstantaneous: msg.rgbInstantaneous,
-          rgbAverage: msg.rgbAverage,
-          average: Math.floor(msg.average),
-          averageWindow1: Math.floor(msg.averageWindow1),
-          n: msg.n,
-          nNeutral: msg.nNeutral,
-          nNegative: msg.nNegative,
-          nPositive: msg.nPositive
-          }
-        });
-      } else if (msg.candidate === "RealBenCarson") {
-        this.setState({"Ben Carson": {
+      } else if (msg.candidate === "JohnKasich") {
+        this.setState({"John Kasich": {
           tweet: msg.tweet,
           positive: msg.positive,
           negative: msg.negative,
@@ -378,8 +348,7 @@
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].averageWindow1, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].averageWindow1, "colorIndex": "graph-3"},
                   {"label": "Cruz", "value": this.state["Ted Cruz"].averageWindow1, "colorIndex": "graph-4"},
-                  {"label": "Rubio", "value": this.state["Marco Rubio"].averageWindow1, "colorIndex": "graph-5"},
-                  {"label": "Carson", "value": this.state["Ben Carson"].averageWindow1, "colorIndex": "graph-6"},
+                  {"label": "Kasich", "value": this.state["John Kasich"].averageWindow1, "colorIndex": "graph-5"},
                 ]} />
               <Grommet.Header pad={{horizontal: 'medium'}}>Daily Current Average Public Sentiment from 0 to 100</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
@@ -387,8 +356,7 @@
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].average, "colorIndex": "graph-3"},
                   {"label": "Cruz", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-4"},
-                  {"label": "Rubio", "value": this.state["Marco Rubio"].average, "colorIndex": "graph-5"},
-                  {"label": "Carson", "value": this.state["Ben Carson"].average, "colorIndex": "graph-6"},
+                  {"label": "Kasich", "value": this.state["John Kasich"].average, "colorIndex": "graph-5"},
                 ]} />
               <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 30000, "label": "30,000"}} series={[
@@ -396,8 +364,7 @@
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].n, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].n, "colorIndex": "graph-3"},
                   {"label": "Cruz", "value": this.state["Ted Cruz"].n, "colorIndex": "graph-4"},
-                  {"label": "Rubio", "value": this.state["Marco Rubio"].n, "colorIndex": "graph-5"},
-                  {"label": "Carson", "value": this.state["Ben Carson"].n, "colorIndex": "graph-6"},
+                  {"label": "Kasich", "value": this.state["John Kasich"].n, "colorIndex": "graph-5"},
                 ]} />
             </Grommet.Article>
             <Grommet.Tabs>
@@ -503,7 +470,7 @@
                       <img className="candidate-image" src="img/donald.jpg" />
                     </Grommet.Tile>
                     <Grommet.Tile>
-                      <p>Donald John Trump, Sr. (born June 14, 1946) is an American businessperson and media personality. He is the chairman and president of The Trump Organization and the founder of Trump Entertainment Resorts. Trump's career, branding efforts, personal life, wealth, and outspoken manner have made him famous. Since 2015, he is also a candidate for President of the United States in the 2016 election.</p>
+                      <p>Donald John Trump, Sr. (born June 14, 1946) is an American businessperson and media personality. He is the chairman and president of The Trump Organization and the founder of Trump Entertainment Resorts. Trumps career, branding efforts, personal life, wealth, and outspoken manner have made him famous. Since 2015, he is also a candidate for President of the United States in the 2016 election.</p>
                     </Grommet.Tile>
                   </Grommet.Tiles>
                   <Grommet.Article>
@@ -589,75 +556,29 @@
 
                 </Grommet.Box>
               </Grommet.Tab>
-              <Grommet.Tab title="Marco Rubio">
-                <Grommet.Box>
-                    <Grommet.Header pad={{horizontal: 'small'}}>Marco Rubio &nbsp;<a href="https://en.wikipedia.org/wiki/Marco_Rubio" target="_blank"><Grommet.Icons.Base.Article large={false} colorIndex="brand" /></a></Grommet.Header>
-                    <Grommet.Tiles fill={true}>
-                      <Grommet.Tile>
-                        <img className="candidate-image" src="img/marco.jpg" />
-                      </Grommet.Tile>
-                      <Grommet.Tile>
-                        <p>Marco Antonio Rubio (born May 28, 1971) is the junior United States Senator from the state of Florida, serving since January 2011, and is a candidate for President of the United States in the 2016 election. He previously served as Speaker of the Florida House of Representatives.</p>
-                      </Grommet.Tile>
-                    </Grommet.Tiles>
-                    <Grommet.Article>
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                          {"label": "Positive", "value": this.state["Marco Rubio"].nPositive, "colorIndex": "graph-1"},
-                          {"label": "Negative", "value": this.state["Marco Rubio"].nNegative, "colorIndex": "graph-2"},
-                          {"label": "Neutral", "value": this.state["Marco Rubio"].nNeutral, "colorIndex": "graph-3"}
-                        ]} />
-                        <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment from 0 to 100</Grommet.Header>
-                        <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                            {"label": "Daily Average", "value": this.state["Marco Rubio"].average, "colorIndex": "graph-1"},
-                            {"label": "Instantaneous", "value": this.state["Marco Rubio"].averageWindow1, "colorIndex": "graph-2"},
-                          ]} />
-                    </Grommet.Article>
-                    <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
-                    <Grommet.Table>
-                        <thead>
-                          <tr>
-                            <th>Title</th>
-                            <th>Preview</th>
-                            <th>Summary</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <% for (var i=0; i<candidateArticles["Marco Rubio"].articles.length; i++) { %>
-                        <Grommet.TableRow>
-                          <td><a href="<%= candidateArticles["Marco Rubio"].articles[i].reference %>" target="_blank"><%= candidateArticles["Marco Rubio"].articles[i].title %></a></td>
-                          <td className="marco-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
-                          <td><%= candidateArticles["Marco Rubio"].articles[i].summary %></td>
-                        </Grommet.TableRow>
-                        <% } %>
-                        </tbody>
-                      </Grommet.Table>
 
-
-                </Grommet.Box>
-              </Grommet.Tab>
-              <Grommet.Tab title="Ben Carson">
+              <Grommet.Tab title="John Kasich">
                 <Grommet.Box>
-                  <Grommet.Header pad={{horizontal: 'small'}}>Ben Carson &nbsp;<a href="https://en.wikipedia.org/wiki/Ben_Carson" target="_blank"><Grommet.Icons.Base.Article large={false} colorIndex="brand" /></a></Grommet.Header>
+                  <Grommet.Header pad={{horizontal: 'small'}}>John Kasich &nbsp;<a href="https://en.wikipedia.org/wiki/John_Kasich" target="_blank"><Grommet.Icons.Base.Article large={false} colorIndex="brand" /></a></Grommet.Header>
                   <Grommet.Tiles fill={true}>
                     <Grommet.Tile>
-                      <img className="candidate-image" src="img/ben.jpg" />
+                      <img className="candidate-image" src="img/john.jpg" />
                     </Grommet.Tile>
                     <Grommet.Tile>
-                      <p>Benjamin Solomon "Ben" Carson, Sr. (born September 18, 1951) is a retired American neurosurgeon who is a candidate for the Republican nomination for President of the United States in the 2016 election. Born in Detroit, Michigan and a graduate of Yale University and the University of Michigan Medical School, Carson has authored numerous books on his medical career and political stances, and was the subject of a television drama film in 2009.</p>
+                      <p>John Richard Kasich (/ˈkeɪsᵻk/ kay-sick; born May 13, 1952) is an American politician and the current governor of Ohio, first elected in 2010 and re-elected in 2014. On July 21, 2015, he announced his candidacy for the 2016 Republican nomination for President of the United States.</p>
                     </Grommet.Tile>
                   </Grommet.Tiles>
                   <Grommet.Article>
                     <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
                     <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                        {"label": "Positive", "value": this.state["Ben Carson"].nPositive, "colorIndex": "graph-1"},
-                        {"label": "Negative", "value": this.state["Ben Carson"].nNegative, "colorIndex": "graph-2"},
-                        {"label": "Neutral", "value": this.state["Ben Carson"].nNeutral, "colorIndex": "graph-3"}
+                        {"label": "Positive", "value": this.state["John Kasich"].nPositive, "colorIndex": "graph-1"},
+                        {"label": "Negative", "value": this.state["John Kasich"].nNegative, "colorIndex": "graph-2"},
+                        {"label": "Neutral", "value": this.state["John Kasich"].nNeutral, "colorIndex": "graph-3"}
                       ]} />
                       <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment from 0 to 100</Grommet.Header>
                       <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                          {"label": "Daily Average", "value": this.state["Ben Carson"].average, "colorIndex": "graph-1"},
-                          {"label": "Instantaneous", "value": this.state["Ben Carson"].averageWindow1, "colorIndex": "graph-2"},
+                          {"label": "Daily Average", "value": this.state["John Kasich"].average, "colorIndex": "graph-1"},
+                          {"label": "Instantaneous", "value": this.state["John Kasich"].averageWindow1, "colorIndex": "graph-2"},
                         ]} />
                   </Grommet.Article>
                   <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
@@ -670,11 +591,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <% for (var i=0; i<candidateArticles["Ben Carson"].articles.length; i++) { %>
+                      <% for (var i=0; i<candidateArticles["John Kasich"].articles.length; i++) { %>
                       <Grommet.TableRow>
-                        <td><a href="<%= candidateArticles["Ben Carson"].articles[i].reference %>" target="_blank"><%= candidateArticles["Ben Carson"].articles[i].title %></a></td>
+                        <td><a href="<%= candidateArticles["John Kasich"].articles[i].reference %>" target="_blank"><%= candidateArticles["John Kasich"].articles[i].title %></a></td>
                         <td className="ben-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
-                        <td><%= candidateArticles["Ben Carson"].articles[i].summary %></td>
+                        <td><%= candidateArticles["John Kasich"].articles[i].summary %></td>
                       </Grommet.TableRow>
                       <% } %>
                       </tbody>

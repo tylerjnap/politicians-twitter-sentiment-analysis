@@ -70,17 +70,7 @@ var candidateNumbers = {
     nWindow1: 0,
     runningAverageWindow1Array: []
   },
-  "marcorubio": {
-    averages: {newAvg: 0, oldAvg: 0},
-    n: 0,
-    nPositive: 0,
-    nNegative: 0,
-    nNeutral: 0,
-    runningAverageWindow1: 0,
-    nWindow1: 0,
-    runningAverageWindow1Array: []
-  },
-  "RealBenCarson": {
+  "JohnKasich": {
     averages: {newAvg: 0, oldAvg: 0},
     n: 0,
     nPositive: 0,
@@ -99,8 +89,7 @@ var candidateArticles = {
   "Hillary Clinton": {articles: [], concepts: []},
   "Donald Trump": {articles: [], concepts: []},
   "Ted Cruz": {articles: [], concepts: []},
-  "Marco Rubio": {articles: [], concepts: []},
-  "Ben Carson": {articles: [], concepts: []}
+  "John Kasich": {articles: [], concepts: []},
 };
 
 app.get("/", function(req, res) {
@@ -222,7 +211,7 @@ function updateCandidateArticles() {
   async.forEachOf(candidateArticles, function (value1, key1, callback1) {
     candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
     var data1 = {text: key1, indexes: ['news_eng'], summary: 'quick', total_results: 'false'};
-    hodClient.call('findsimilar', data1, function(err1, resp1) {
+    hodClient.call('querytextindex', data1, function(err1, resp1) {
       if (!err1 && !resp1.body.error) {
         console.log(resp1.body.documents);
         var articles = resp1.body.documents;
