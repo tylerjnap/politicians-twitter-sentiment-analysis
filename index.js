@@ -115,7 +115,59 @@ app.get("/whats_this", function(req, res) {
 
 // Route for third party developers to hit if they want the candidate sentiment data
 app.get('/candidatedata', function(req, res) {
-  var payload = candidateNumbers
+  // var payload = candidateNumbers
+  var payload = {candidates: [
+    {
+      name: "SenSanders",
+      averages: {newAvg: candidateNumbers["SenSanders"].averages.newAvg, oldAvg: candidateNumbers["SenSanders"].averages.oldAvg},
+      n: candidateNumbers["SenSanders"].n,
+      nPositive: candidateNumbers["SenSanders"].nPositive,
+      nNegative: candidateNumbers["SenSanders"].nNegative,
+      nNeutral: candidateNumbers["SenSanders"].nNeutral,
+      runningAverageWindow1: candidateNumbers["SenSanders"].runningAverageWindow1,
+      runningAverageWindow1Array: candidateNumbers["SenSanders"].runningAverageWindow1Array
+    },
+    {
+      name: "HillaryClinton",
+      averages: {newAvg: candidateNumbers["HillaryClinton"].averages.newAvg, oldAvg: candidateNumbers["HillaryClinton"].averages.oldAvg},
+      n: candidateNumbers["HillaryClinton"].n,
+      nPositive: candidateNumbers["HillaryClinton"].nPositive,
+      nNegative: candidateNumbers["HillaryClinton"].nNegative,
+      nNeutral: candidateNumbers["HillaryClinton"].nNeutral,
+      runningAverageWindow1: candidateNumbers["HillaryClinton"].runningAverageWindow1,
+      runningAverageWindow1Array: candidateNumbers["HillaryClinton"].runningAverageWindow1Array
+    },
+    {
+      name: "realDonaldTrump",
+      averages: {newAvg: candidateNumbers["realDonaldTrump"].averages.newAvg, oldAvg: candidateNumbers["realDonaldTrump"].averages.oldAvg},
+      n: candidateNumbers["realDonaldTrump"].n,
+      nPositive: candidateNumbers["realDonaldTrump"].nPositive,
+      nNegative: candidateNumbers["realDonaldTrump"].nNegative,
+      nNeutral: candidateNumbers["realDonaldTrump"].nNeutral,
+      runningAverageWindow1: candidateNumbers["realDonaldTrump"].runningAverageWindow1,
+      runningAverageWindow1Array: candidateNumbers["realDonaldTrump"].runningAverageWindow1Array
+    },
+    {
+      name: "tedcruz",
+      averages: {newAvg: candidateNumbers["tedcruz"].averages.newAvg, oldAvg: candidateNumbers["tedcruz"].averages.oldAvg},
+      n: candidateNumbers["tedcruz"].n,
+      nPositive: candidateNumbers["tedcruz"].nPositive,
+      nNegative: candidateNumbers["tedcruz"].nNegative,
+      nNeutral: candidateNumbers["tedcruz"].nNeutral,
+      runningAverageWindow1: candidateNumbers["tedcruz"].runningAverageWindow1,
+      runningAverageWindow1Array: candidateNumbers["tedcruz"].runningAverageWindow1Array
+    },
+    {
+      name: "JohnKasich",
+      averages: {newAvg: candidateNumbers["JohnKasich"].averages.newAvg, oldAvg: candidateNumbers["JohnKasich"].averages.oldAvg},
+      n: candidateNumbers["JohnKasich"].n,
+      nPositive: candidateNumbers["JohnKasich"].nPositive,
+      nNegative: candidateNumbers["JohnKasich"].nNegative,
+      nNeutral: candidateNumbers["JohnKasich"].nNeutral,
+      runningAverageWindow1: candidateNumbers["JohnKasich"].runningAverageWindow1,
+      runningAverageWindow1Array: candidateNumbers["JohnKasich"].runningAverageWindow1Array
+    }
+  ]}
   res.status(200).send(payload)
 })
 
