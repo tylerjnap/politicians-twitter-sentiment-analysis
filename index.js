@@ -108,6 +108,33 @@ app.get("/candidatehtml", function(req, res) {
   res.status(200).send(payload)
 })
 
+// Route for mobile app HTML of candidate articles
+app.get("/candidatehtml_mobile", function(req, res) {
+  var payload ={candidates: [
+      {
+        name: "Bernie Sanders",
+        articles: candidateArticles["Bernie Sanders"].articles
+      },
+      {
+        name: "Hillary Clinton",
+        articles: candidateArticles["Hillary Clinton"].articles
+      },
+      {
+        name: "Donald Trump",
+        articles: candidateArticles["Donald Trump"].articles
+      },
+      {
+        name: "Ted Cruz",
+        articles: candidateArticles["Ted Cruz"].articles
+      },
+      {
+        name: "John Kasich",
+        articles: candidateArticles["John Kasich"].articles
+      },
+    ]}
+    res.status(200).send(payload)
+})
+
 // Route for the app explanation at the top
 app.get("/whats_this", function(req, res) {
   res.status(200).sendFile(path.join(__dirname, 'views', 'whats_this.html'))
