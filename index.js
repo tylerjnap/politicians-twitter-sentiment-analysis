@@ -298,6 +298,7 @@ updateCandidateArticles();
 
 // Function to retrieve articles about each candidate. Results are stored in the object, candidateArticles, created at the top of this document
 function updateCandidateArticles() {
+  // Loop through each candidate and obtain articles pertaining to them from Haven OnDemand using Query Text Index API
   async.forEachOf(candidateArticles, function (value1, key1, callback1) {
     candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
     var data1 = {text: key1, indexes: ['news_eng'], summary: 'quick', total_results: 'false'};
@@ -306,6 +307,7 @@ function updateCandidateArticles() {
         console.log(resp1.body.documents);
         var articles = resp1.body.documents;
         candidateArticles[key1].articles = articles;
+        // Loop through each article and obtain the HTML and concepts from Haven OnDemand using View Document API and Extract Concepts API
         async.each(articles, function (article, callback2) {
           console.log(article)
           var data2 = {url: article.reference};
@@ -315,7 +317,6 @@ function updateCandidateArticles() {
               // add real html content
               var html = resp3.body;
               candidateArticles[key1].articles[articleIndex].html = html
-              // debugger;
               console.log("worked")
             }
           });
@@ -342,6 +343,7 @@ function updateCandidateArticles() {
   });
 }
 
+// For debugging
 // setInterval(function(){debugger;}, 6000);
 
 // Function for mapping the color of the sentiment (no longer usingin front-end)
