@@ -140,6 +140,11 @@ app.get("/whats_this", function(req, res) {
   res.status(200).sendFile(path.join(__dirname, 'views', 'whats_this.html'))
 })
 
+// Route for open source contribution explanation
+app.get("/contribute", function(req, res) {
+  res.status(200).sendFile(path.join(__dirname, 'views', 'contribute.html'))
+})
+
 // Route for third party developers to hit if they want the candidate sentiment data
 app.get('/candidatedata', function(req, res) {
   // var payload = candidateNumbers

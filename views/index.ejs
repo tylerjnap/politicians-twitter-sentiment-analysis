@@ -126,6 +126,12 @@
   #cboxContent {
     color: black;
   }
+  /*For open source contribution section*/
+  .contribute-text {
+    color: #2ad2c9;
+    /*border: 1px solid #ff8d6d;*/
+  }
+
   </style>
 </head>
 <body>
@@ -314,6 +320,9 @@
 
           <Grommet.Split>
             <Grommet.Article size="small" className="left-side">
+              <Grommet.Header pad={{horizontal: 'medium'}} className='contribute-text'>
+                Contribute to this open source project! <Grommet.Icons.Base.Grow large={false} colorIndex="brand" className="contribute" />
+              </Grommet.Header>
               <Grommet.Header pad={{horizontal: 'medium'}}>Instantaneous Public Sentiment from 0 to 100</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
                   {"label": "Sanders", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-1"},
@@ -689,6 +698,7 @@ $(window).load(function() {
     }
 
     $('.whats-this').colorbox({href:"./whats_this", opacity: "1",  height: '90%', width: '40%'});
+    $('.contribute').colorbox({href:"./contribute", opacity: "1",  height: '90%', width: '40%'});
 
   });
 </script>
