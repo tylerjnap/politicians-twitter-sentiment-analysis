@@ -20,6 +20,7 @@ We're continually looking to update this dashboard with powerful insights extrac
 
 ## Priorities
 We encourage developers to add to this as they see fit. Here is what we think woud be neat additions to this dashboard:
+
 1. Historical, searchable graphs (line, bar, or chart) of the information presented on this dashboard.
 2. How each of the candidates stand on particular issues.
 3. Each of the candidates plans once in office (taxes, military, etc)
