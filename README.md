@@ -23,5 +23,8 @@ We encourage developers to add to this as they see fit. Here is what we think wo
 
 1. Historical, searchable graphs (line, bar, or chart) of the information presented on this dashboard.
 2. How each of the candidates stand on particular issues.
-3. Each of the candidates plans once in office (taxes, military, etc)
+3. Each of the candidates plans once in office (taxes, military, etc).
 4. Each of the candidates most recent tweets.
+5. The capability for an admin account where they can change which hashtags, users, and topics to monitor through the UI.
+6. Use Haven OnDemand's [Concept Extraction API](https://dev.havenondemand.com/apis/extractconcepts#overview) and [Entity Extraction API](https://dev.havenondemand.com/apis/extractentities) to create a tag (word) cloud for each candidate.
+7. Save the topics and associated sentiment score from each tweet analyzed to determine an aggregate sentiment score for each topic. From this data, create a visualization to show the most negative and most positive topics related to each candidate.
