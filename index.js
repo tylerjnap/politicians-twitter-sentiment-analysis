@@ -10,7 +10,7 @@ var havenondemand = require('havenondemand');
 var async = require("async");
 var RateLimiter = require('limiter').RateLimiter;
 
-var hodClient = new havenondemand.HODClient(process.env.hpe_apikey);
+var hodClient = new havenondemand.HODClient(process.env.hpe_apikey, "v1", true);
 
 var twitterClient = new Twitter({
   consumer_key: process.env.consumer_key,
@@ -241,6 +241,7 @@ function twitterStream(candidate, candidateData, tweetObject) {
       // debugger;
       if (!err && !resp.body.error) {
         if (resp.body.aggregate !== undefined) {
+          console.log(resp.body)
           candidateData.n += 1; //increase n by one
           candidateData.nWindow1 +=1 ; //increase by one
           var sentiment = resp.body.aggregate.sentiment;
