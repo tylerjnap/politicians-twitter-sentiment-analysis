@@ -10,7 +10,7 @@ var havenondemand = require('havenondemand');
 var async = require("async");
 var RateLimiter = require('limiter').RateLimiter;
 
-var hodClient = new havenondemand.HODClient(process.env.hpe_apikey, "v1", true);
+var hodClient = new havenondemand.HODClient(process.env.hpe_apikey);
 
 var twitterClient = new Twitter({
   consumer_key: process.env.consumer_key,
