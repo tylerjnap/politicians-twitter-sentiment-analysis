@@ -287,13 +287,15 @@ function twitterStream(candidate, candidateData, tweetObject) {
               }]
             })
           }
-          hodClient.call('addtotextindex', data2, function(err2, resp2, body2) {
-            if (resp2) {
-              if (resp2.body) {
-                console.log(resp2.body)
+          if (process.env.add_text_index === 'true') {
+            hodClient.call('addtotextindex', data2, function(err2, resp2, body2) {
+              if (resp2) {
+                if (resp2.body) {
+                  console.log(resp2.body)
+                }
               }
-            }
-          })
+            })
+          }
         }
       } else {
         // if (resp.body.error) {console.log(resp.body.error);}
