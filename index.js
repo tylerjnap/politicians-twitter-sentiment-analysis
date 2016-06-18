@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var candidateString = "SenSanders,HillaryClinton,realDonaldTrump,tedcruz,marcorubio,RealBenCarson"
+var candidateString = "SenSanders,HillaryClinton,realDonaldTrump"
 var window1 = 10;
 
 // Data used to store and calculate sentiment for candidates
@@ -67,26 +67,6 @@ var candidateNumbers = {
       runningAverageWindow1: 0,
       nWindow1: 0,
       runningAverageWindow1Array: []
-  },
-  "tedcruz": {
-    averages: {newAvg: 0, oldAvg: 0},
-    n: 0,
-    nPositive: 0,
-    nNegative: 0,
-    nNeutral: 0,
-    runningAverageWindow1: 0,
-    nWindow1: 0,
-    runningAverageWindow1Array: []
-  },
-  "JohnKasich": {
-    averages: {newAvg: 0, oldAvg: 0},
-    n: 0,
-    nPositive: 0,
-    nNegative: 0,
-    nNeutral: 0,
-    runningAverageWindow1: 0,
-    nWindow1: 0,
-    runningAverageWindow1Array: []
   }
 }
 
@@ -97,8 +77,6 @@ var candidateArticles = {
   "Bernie Sanders": {articles: [], concepts: []},
   "Hillary Clinton": {articles: [], concepts: []},
   "Donald Trump": {articles: [], concepts: []},
-  "Ted Cruz": {articles: [], concepts: []},
-  "John Kasich": {articles: [], concepts: []},
 };
 
 app.get("/", function(req, res) {
@@ -128,14 +106,6 @@ app.get("/candidatehtml_mobile", function(req, res) {
       {
         name: "Donald Trump",
         articles: candidateArticles["Donald Trump"].articles
-      },
-      {
-        name: "Ted Cruz",
-        articles: candidateArticles["Ted Cruz"].articles
-      },
-      {
-        name: "John Kasich",
-        articles: candidateArticles["John Kasich"].articles
       },
     ]}
     res.status(200).send(payload)
@@ -185,26 +155,6 @@ app.get('/candidatedata', function(req, res) {
       runningAverageWindow1: candidateNumbers["realDonaldTrump"].runningAverageWindow1,
       runningAverageWindow1Array: candidateNumbers["realDonaldTrump"].runningAverageWindow1Array
     },
-    {
-      name: "tedcruz",
-      averages: {newAvg: candidateNumbers["tedcruz"].averages.newAvg, oldAvg: candidateNumbers["tedcruz"].averages.oldAvg},
-      n: candidateNumbers["tedcruz"].n,
-      nPositive: candidateNumbers["tedcruz"].nPositive,
-      nNegative: candidateNumbers["tedcruz"].nNegative,
-      nNeutral: candidateNumbers["tedcruz"].nNeutral,
-      runningAverageWindow1: candidateNumbers["tedcruz"].runningAverageWindow1,
-      runningAverageWindow1Array: candidateNumbers["tedcruz"].runningAverageWindow1Array
-    },
-    {
-      name: "JohnKasich",
-      averages: {newAvg: candidateNumbers["JohnKasich"].averages.newAvg, oldAvg: candidateNumbers["JohnKasich"].averages.oldAvg},
-      n: candidateNumbers["JohnKasich"].n,
-      nPositive: candidateNumbers["JohnKasich"].nPositive,
-      nNegative: candidateNumbers["JohnKasich"].nNegative,
-      nNeutral: candidateNumbers["JohnKasich"].nNeutral,
-      runningAverageWindow1: candidateNumbers["JohnKasich"].runningAverageWindow1,
-      runningAverageWindow1Array: candidateNumbers["JohnKasich"].runningAverageWindow1Array
-    }
   ]}
   res.status(200).send(payload)
 })

@@ -185,34 +185,6 @@
           nNeutral: 0,
           nNegative: 0,
           nPositive: 0
-        },
-        "Ted Cruz": {
-          tweet: "",
-          positive: {},
-          negative: {},
-          aggregate: {},
-          rgbInstantaneous: {},
-          rgbAverage: {},
-          average: 0.0,
-          averageWindow1: 0.0,
-          n: 0,
-          nNeutral: 0,
-          nNegative: 0,
-          nPositive: 0
-        },
-        "John Kasich": {
-          tweet: "",
-          positive: {},
-          negative: {},
-          aggregate: {},
-          rgbInstantaneous: {},
-          rgbAverage: {},
-          average: 0.0,
-          averageWindow1: 0.0,
-          n: 0,
-          nNeutral: 0,
-          nNegative: 0,
-          nPositive: 0
         }
       }
       return data;
@@ -268,38 +240,6 @@
           nPositive: msg.nPositive
           }
         });
-      } else if (msg.candidate === "tedcruz") {
-        this.setState({"Ted Cruz": {
-          tweet: msg.tweet,
-          positive: msg.positive,
-          negative: msg.negative,
-          aggregate: msg.aggregate,
-          rgbInstantaneous: msg.rgbInstantaneous,
-          rgbAverage: msg.rgbAverage,
-          average: Math.floor(msg.average),
-          averageWindow1: Math.floor(msg.averageWindow1),
-          n: msg.n,
-          nNeutral: msg.nNeutral,
-          nNegative: msg.nNegative,
-          nPositive: msg.nPositive
-          }
-        });
-      } else if (msg.candidate === "JohnKasich") {
-        this.setState({"John Kasich": {
-          tweet: msg.tweet,
-          positive: msg.positive,
-          negative: msg.negative,
-          aggregate: msg.aggregate,
-          rgbInstantaneous: msg.rgbInstantaneous,
-          rgbAverage: msg.rgbAverage,
-          average: Math.floor(msg.average),
-          averageWindow1: Math.floor(msg.averageWindow1),
-          n: msg.n,
-          nNeutral: msg.nNeutral,
-          nNegative: msg.nNegative,
-          nPositive: msg.nPositive
-          }
-        });
       } else {
         console.log("No candidate detected");
       }
@@ -328,24 +268,18 @@
                   {"label": "Sanders", "value": this.state["Bernie Sanders"].averageWindow1, "colorIndex": "graph-1"},
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].averageWindow1, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].averageWindow1, "colorIndex": "graph-3"},
-                  {"label": "Cruz", "value": this.state["Ted Cruz"].averageWindow1, "colorIndex": "graph-4"},
-                  {"label": "Kasich", "value": this.state["John Kasich"].averageWindow1, "colorIndex": "graph-5"},
                 ]} />
               <Grommet.Header pad={{horizontal: 'medium'}}>Daily Current Average Public Sentiment from 0 to 100</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
                   {"label": "Sanders", "value": this.state["Bernie Sanders"].average, "colorIndex": "graph-1"},
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].average, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].average, "colorIndex": "graph-3"},
-                  {"label": "Cruz", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-4"},
-                  {"label": "Kasich", "value": this.state["John Kasich"].average, "colorIndex": "graph-5"},
                 ]} />
               <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
               <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 30000, "label": "30,000"}} series={[
                   {"label": "Sanders", "value": this.state["Bernie Sanders"].n, "colorIndex": "graph-1"},
                   {"label": "Clinton", "value": this.state["Hillary Clinton"].n, "colorIndex": "graph-2"},
                   {"label": "Trump", "value": this.state["Donald Trump"].n, "colorIndex": "graph-3"},
-                  {"label": "Cruz", "value": this.state["Ted Cruz"].n, "colorIndex": "graph-4"},
-                  {"label": "Kasich", "value": this.state["John Kasich"].n, "colorIndex": "graph-5"},
                 ]} />
             </Grommet.Article>
             <Grommet.Tabs>
@@ -486,102 +420,6 @@
                       <% } %>
                       </tbody>
                     </Grommet.Table>
-
-
-                </Grommet.Box>
-              </Grommet.Tab>
-              <Grommet.Tab title="Ted Cruz">
-                <Grommet.Box>
-                  <Grommet.Header pad={{horizontal: 'small'}}>Ted Cruz &nbsp;<a href="https://en.wikipedia.org/wiki/Ted_Cruz" target="_blank"><Grommet.Icons.Base.Article large={false} colorIndex="brand" /></a></Grommet.Header>
-                  <Grommet.Tiles fill={true}>
-                    <Grommet.Tile>
-                      <img className="candidate-image" src="img/ted.jpg" />
-                    </Grommet.Tile>
-                    <Grommet.Tile>
-                      <p>Rafael Edward "Ted" Cruz (born December 22, 1970) is an American politician and U.S. Senator from Texas. He is a Republican candidate for President of the United States in the 2016 presidential election.</p>
-                    </Grommet.Tile>
-                  </Grommet.Tiles>
-                  <Grommet.Article>
-                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
-                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                        {"label": "Positive", "value": this.state["Ted Cruz"].nPositive, "colorIndex": "graph-1"},
-                        {"label": "Negative", "value": this.state["Ted Cruz"].nNegative, "colorIndex": "graph-2"},
-                        {"label": "Neutral", "value": this.state["Ted Cruz"].nNeutral, "colorIndex": "graph-3"}
-                      ]} />
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment from 0 to 100</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                          {"label": "Daily Average", "value": this.state["Ted Cruz"].average, "colorIndex": "graph-1"},
-                          {"label": "Instantaneous", "value": this.state["Ted Cruz"].averageWindow1, "colorIndex": "graph-2"},
-                        ]} />
-                  </Grommet.Article>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
-                  <Grommet.Table>
-                      <thead>
-                        <tr>
-                          <th>Title</th>
-                          <th>Preview</th>
-                          <th>Summary</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <% for (var i=0; i<candidateArticles["Ted Cruz"].articles.length; i++) { %>
-                      <Grommet.TableRow>
-                        <td><a href="<%= candidateArticles["Ted Cruz"].articles[i].reference %>" target="_blank"><%= candidateArticles["Ted Cruz"].articles[i].title %></a></td>
-                        <td className="ted-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
-                        <td><%= candidateArticles["Ted Cruz"].articles[i].summary %></td>
-                      </Grommet.TableRow>
-                      <% } %>
-                      </tbody>
-                    </Grommet.Table>
-
-
-                </Grommet.Box>
-              </Grommet.Tab>
-
-              <Grommet.Tab title="John Kasich">
-                <Grommet.Box>
-                  <Grommet.Header pad={{horizontal: 'small'}}>John Kasich &nbsp;<a href="https://en.wikipedia.org/wiki/John_Kasich" target="_blank"><Grommet.Icons.Base.Article large={false} colorIndex="brand" /></a></Grommet.Header>
-                  <Grommet.Tiles fill={true}>
-                    <Grommet.Tile>
-                      <img className="candidate-image" src="img/john.jpg" />
-                    </Grommet.Tile>
-                    <Grommet.Tile>
-                      <p>John Richard Kasich (/ˈkeɪsᵻk/ kay-sick; born May 13, 1952) is an American politician and the current governor of Ohio, first elected in 2010 and re-elected in 2014. On July 21, 2015, he announced his candidacy for the 2016 Republican nomination for President of the United States.</p>
-                    </Grommet.Tile>
-                  </Grommet.Tiles>
-                  <Grommet.Article>
-                    <Grommet.Header pad={{horizontal: 'medium'}}>Number of Tweets Today</Grommet.Header>
-                    <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "0"}} max={{"value": 10000, "label": "10,000"}} series={[
-                        {"label": "Positive", "value": this.state["John Kasich"].nPositive, "colorIndex": "graph-1"},
-                        {"label": "Negative", "value": this.state["John Kasich"].nNegative, "colorIndex": "graph-2"},
-                        {"label": "Neutral", "value": this.state["John Kasich"].nNeutral, "colorIndex": "graph-3"}
-                      ]} />
-                      <Grommet.Header pad={{horizontal: 'medium'}}>Public Sentiment from 0 to 100</Grommet.Header>
-                      <Grommet.Meter size="large" legend={{total: false}} min={{"value": 0, "label": "Low Sentiment"}} max={{"value": 100, "label": "High Sentiment"}} series={[
-                          {"label": "Daily Average", "value": this.state["John Kasich"].average, "colorIndex": "graph-1"},
-                          {"label": "Instantaneous", "value": this.state["John Kasich"].averageWindow1, "colorIndex": "graph-2"},
-                        ]} />
-                  </Grommet.Article>
-                  <Grommet.Header pad={{horizontal: 'medium'}}>Current News Articles</Grommet.Header>
-                  <Grommet.Table>
-                      <thead>
-                        <tr>
-                          <th>Title</th>
-                          <th>Preview</th>
-                          <th>Summary</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <% for (var i=0; i<candidateArticles["John Kasich"].articles.length; i++) { %>
-                      <Grommet.TableRow>
-                        <td><a href="<%= candidateArticles["John Kasich"].articles[i].reference %>" target="_blank"><%= candidateArticles["John Kasich"].articles[i].title %></a></td>
-                        <td className="ben-<%= i %>"><Grommet.Icons.Base.Expand large={false} colorIndex="brand" /></td>
-                        <td><%= candidateArticles["John Kasich"].articles[i].summary %></td>
-                      </Grommet.TableRow>
-                      <% } %>
-                      </tbody>
-                    </Grommet.Table>
-
 
 
                 </Grommet.Box>
