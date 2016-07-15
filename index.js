@@ -239,7 +239,7 @@ function updateCandidateArticles() {
     candidateArticles[key1].concepts = []; //delete the old concepts for the candidate
     var data1 = {text: key1, indexes: ['news_eng'], summary: 'quick', total_results: 'false'};
     hodClient.call('querytextindex', data1, function(err1, resp1) {
-      if (!err1 && !resp1.body.error) {
+      if (!err1) {
         console.log(resp1.body.documents);
         var articles = resp1.body.documents;
         candidateArticles[key1].articles = articles;
@@ -249,7 +249,7 @@ function updateCandidateArticles() {
           var data2 = {url: article.reference};
           hodClient.call('viewdocument', data2, function(err3, resp3) {
             var articleIndex = candidateArticles[key1].articles.indexOf(article);
-            if (!err3 && !resp3.body.error && articleIndex >= 0) {
+            if (!err3 && articleIndex >= 0) {
               // add real html content
               var html = resp3.body;
               candidateArticles[key1].articles[articleIndex].html = html
@@ -270,7 +270,7 @@ function updateCandidateArticles() {
         });
       } else {
         console.log("------------------");
-        if (resp1.body.error) {console.log(resp1.body.error);}
+        if (err1) {console.log(err1);}
         console.log(err1);
       }
     });
