@@ -214,10 +214,10 @@ function twitterStream(candidate, candidateData, tweetObject) {
         }
         if (process.env.add_text_index === 'true') {
           hodClient.call('addtotextindex', data2, function(err2, resp2, body2) {
-            if (resp2) {
-              if (resp2.body) {
-                console.log(resp2.body)
-              }
+            if (err2) {
+              console.log(err2)
+            } else {
+              console.log(resp2.body)
             }
           })
         }
