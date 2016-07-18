@@ -162,6 +162,7 @@ twitterClient.stream('statuses/filter', {track: candidateString}, function(strea
   });
 });
 
+//
 //Helper function to process a tweet for a particular candidate
 // Accepts the candidate Twitter handle, an object of his or her sentiment data, and the tweet object returned from the Twitter Stream API
 //Analyzes the sentiment, computes the average, computes the Instantaneous average (averageWindow1), maps to colors (no longer using in front end), emits all to the client through websockets and stores it in a Haven OnDemand Index
