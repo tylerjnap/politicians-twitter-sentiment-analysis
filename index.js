@@ -63,6 +63,8 @@ var candidateNumbers = {
 
 var articleUpdateInterval = 60000*15; //15 minutes
 
+var time = new Date().toLocaleTimeString('en-US', {hour12: true, hour: "numeric", minute: "numeric"});
+
 // Object which stores the articles and concepts from these articles for each of the candidates
 var candidateArticles = {
   "Hillary Clinton": {articles: [], concepts: []},
@@ -72,7 +74,8 @@ var candidateArticles = {
 app.get("/", function(req, res) {
   res.render('index', {
     candidateArticles: candidateArticles,
-    candidateConcepts: candidateArticles["Hillary Clinton"].concepts
+    candidateConcepts: candidateArticles["Hillary Clinton"].concepts,
+    time: time
   });
 });
 
