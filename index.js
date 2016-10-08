@@ -63,7 +63,7 @@ var candidateNumbers = {
 
 var articleUpdateInterval = 60000*15; //15 minutes
 
-var time = new Date().toLocaleTimeString('en-US', {hour12: true, hour: "numeric", minute: "numeric"});
+var time = new Date().toLocaleTimeString('en-US', {hour12: true, hour: "numeric", minute: "numeric", timeZone: "America/New_York"});
 
 // Object which stores the articles and concepts from these articles for each of the candidates
 var candidateArticles = {
